@@ -29,6 +29,14 @@ def t_valueState(t):
     return t
 
 
+def t_valueState_QUOTED_VALUE(t):
+    r'"[^"]*"'
+    t.value = t.value[1:-1]  # Remove the double quotes
+    t.type = 'VALUE'
+    t.lexer.begin('INITIAL')
+    return t
+
+
 def t_valueState_VALUE(t):
     r'[^->\s]+'
     t.type = 'VALUE'
