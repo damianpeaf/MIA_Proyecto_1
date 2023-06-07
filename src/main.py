@@ -1,3 +1,7 @@
 
+from commands import CommandProxy
+
 if __name__ == '__main__':
-    pass
+
+    proxy = CommandProxy()
+    proxy.execute('configure', {})
