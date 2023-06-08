@@ -43,7 +43,8 @@ class CloudFileService:
         if parent_id:
             query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
 
-        response = self._drive_service.files().list(q=query, fields='files(id)').execute()
+        response = self._drive_service.files().list(
+            q=query, fields='files(id)').execute()
         files = response.get('files', [])
 
         if len(files) > 0:
@@ -57,7 +58,8 @@ class CloudFileService:
         if parent_id:
             file_metadata['parents'] = [parent_id]
 
-        file = self._drive_service.files().create(body=file_metadata, fields='id').execute()
+        file = self._drive_service.files().create(
+            body=file_metadata, fields='id').execute()
         return file.get('id')
 
     def _get_root(self):
@@ -98,7 +100,8 @@ class CloudFileService:
 
             query = f"name='{name}' and '{parent_id}' in parents and trashed=false"
 
-            response = self._drive_service.files().list(q=query, fields='files(id)').execute()
+            response = self._drive_service.files().list(
+                q=query, fields='files(id)').execute()
             files = response.get('files', [])
 
             if len(files) > 0:
@@ -125,7 +128,8 @@ class CloudFileService:
 
             media = MediaFileUpload(temp_path, mimetype='text/plain')
 
-            file = self._drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+            file = self._drive_service.files().create(
+                body=file_metadata, media_body=media, fields='id').execute()
 
             return {
                 'msg': 'Archivo creado con exito',
@@ -140,3 +144,6 @@ class CloudFileService:
                 'file_id': None,
                 'ok': False
             }
+
+    def rename_file_dir(self, relative_path: str, new_name: str):
+        pass

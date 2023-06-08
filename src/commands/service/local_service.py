@@ -1,4 +1,9 @@
-from os import path, mkdir, makedirs
+from os import (
+    path,
+    mkdir,
+    makedirs,
+    rename
+)
 from .local_paths import LOCAL_ROOT_PATH
 
 
@@ -26,3 +31,21 @@ class LocalFileService:
         file_path = path.join(dir_path, name)
         with open(file_path, 'w') as file:
             file.write(body)
+
+    def rename_file_dir(self, relative_path: str, new_name: str):
+
+        # Validate if dir/file exists
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        dir_path = path.join(LOCAL_ROOT_PATH, relative_path)
+        base_name = path.dirname(dir_path)
+        new_path = path.join(base_name, new_name)
+
+        if path.exists(new_path):
+            return False
+
+        # Rename
+        rename(dir_path, new_path)
+
+        return True
