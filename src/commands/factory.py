@@ -8,27 +8,25 @@ class CommandFactory:
     def __init__(self):
         pass
 
-    def get_command(self, command_name: str, args: dict[str, str], config: CommandConfig):
-
-        # ? Make config accssible from command implementations (CommandProxy.command_config)
+    def get_command(self, command_name: str, args: dict[str, str]):
 
         if command_name == 'add':
-            return AddCommand(args, config)
+            return AddCommand(args)
         elif command_name == 'backup':
-            return BackupCommand(args, config)
+            return BackupCommand(args)
         elif command_name == 'configure':
-            return ConfigureCommand(args, config)
+            return ConfigureCommand(args)
         elif command_name == 'copy':
-            return CopyCommand(args, config)
+            return CopyCommand(args)
         elif command_name == 'create':
-            return CreateCommand(args, config)
+            return CreateCommand(args)
         elif command_name == 'delete':
-            return DeleteCommand(args, config)
+            return DeleteCommand(args)
         elif command_name == 'modify':
-            return ModifyCommand(args, config)
+            return ModifyCommand(args)
         elif command_name == 'rename':
-            return RenameCommand(args, config)
+            return RenameCommand(args)
         elif command_name == 'transfer':
-            return TransferCommand(args, config)
+            return TransferCommand(args)
 
         return None

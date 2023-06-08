@@ -35,3 +35,12 @@ class Logger:
             'operation_type': 'input' if operation_type == OperationType.INPUT else 'output',
             'date': datetime.now()
         })
+
+    @staticmethod
+    def print_logs():
+        for log in Logger.log_messages:
+            print(f"{log['date']}] - {log['operation_type'].upper()} - {log['type'].upper()} - {log['message']}")
+
+    @staticmethod
+    def clear_logs():
+        Logger.log_messages = []

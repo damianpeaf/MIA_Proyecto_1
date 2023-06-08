@@ -10,13 +10,13 @@ add_validations = [
 
 class AddCommand(CommandStrategy):
 
-    def __init__(self, args: dict[str, str], config: CommandConfig):
-        super().__init__("add", args, config, add_validations)
+    def __init__(self, args: dict[str, str]):
+        super().__init__("add", args,  add_validations)
 
     def execute(self):
-        if self.config.environment == CommandEnvironment.CLOUD:
+        if self.get_config().environment == CommandEnvironment.CLOUD:
             pass
-        elif self.config.environment == CommandEnvironment.LOCAL:
+        elif self.get_config().environment == CommandEnvironment.LOCAL:
             pass
 
         return True

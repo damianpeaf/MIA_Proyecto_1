@@ -13,3 +13,12 @@ class CommandConfig:
         self.log_encryption = log_encryption  # ? Redundant
         self.read_encryption = read_encryption  # ? IDK if this is needed
         self.encryption_key = encryption_key
+
+    def __str__(self) -> str:
+
+        return f"""
+        Environment: {self.environment}
+        Log encryption: {self.log_encryption}
+        Read encryption: {self.read_encryption}
+        Encryption key: {self.encryption_key}
+        """
