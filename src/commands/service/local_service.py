@@ -27,10 +27,23 @@ class LocalFileService:
         # crate folders (even if they exist or not)
         makedirs(dir_path, exist_ok=True)
 
-        # create file
         file_path = path.join(dir_path, name)
+
+        # if file exists return
+        if path.exists(file_path):
+            return {
+                'ok': False,
+                'msg': f"El archivo '{name}' ya existe en la ruta '{relative_path}'"
+            }
+
+        # create file
         with open(file_path, 'w') as file:
             file.write(body)
+
+        return {
+            'ok': True,
+            'msg': f"Archivo '{name}' creado con exito en la ruta '{relative_path}'"
+        }
 
     def rename_file_dir(self, relative_path: str, new_name: str):
 
@@ -43,9 +56,15 @@ class LocalFileService:
         new_path = path.join(base_name, new_name)
 
         if path.exists(new_path):
-            return False
+            return {
+                'ok': False,
+                'msg': f"El archivo '{new_name}' ya existe en la ruta '{relative_path}'"
+            }
 
         # Rename
         rename(dir_path, new_path)
 
-        return True
+        return {
+            'ok': True,
+            'msg': f"Archivo '{relative_path}' renombrado con exito"
+        }

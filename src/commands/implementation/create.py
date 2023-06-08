@@ -46,7 +46,10 @@ class CreateCommand(CommandStrategy):
                 status = resp['ok']
 
         elif self.get_config().environment == CommandEnvironment.LOCAL:
-            self._local_service.create_file(name, body, path)
+            resp = self._local_service.create_file(name, body, path)
+
+            alternative_msg = resp['msg']
+            status = resp['ok']
 
         if alternative_msg and status:
             self.success(alternative_msg)
