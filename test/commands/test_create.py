@@ -23,7 +23,7 @@ def test_create():
 
         # initial config
         proxy.execute('configure', {
-            'type': 'cloud',
+            'type': 'local',
             'encrypt_log': 'false',
             'encrypt_read': 'false',
         })

@@ -30,7 +30,6 @@ class CommandStrategy(ABC):
         self.args = args
         self._validator = ParamValidator(self.command_name, validations)
 
-        # TODO: Add cloud client
         self._cloud_service = default_cloud_service
         self._local_service = LocalFileService()
 
