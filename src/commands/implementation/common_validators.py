@@ -1,4 +1,5 @@
-import os
+from os import path
+
 from ..config import CommandEnvironment
 
 
@@ -25,11 +26,19 @@ def is_bool(value: str):
 
 
 def path_exists(value: str) -> bool:
-    return True if os.path.exists(value) else False
+    return True if path.exists(value) else False
 
 
 def file_exists(value: str) -> bool:
-    return True if os.path.isfile(value) else False
+    return True if path.isfile(value) else False
+
+
+def is_path(value: str):
+
+    if path.isabs(path.normpath(value)):
+        return True
+    else:
+        return False
 
 
 def get_boolean(value: str):

@@ -1,6 +1,7 @@
-from typing import Dict, Callable, List
+from typing import Dict, List
 from abc import ABC, abstractmethod
 
+from .service import LocalFileService, CloudFileService
 from .config import CommandConfig
 from .validator import ParamValidator
 from .logger import Logger, OperationType
@@ -28,7 +29,8 @@ class CommandStrategy(ABC):
         self._validator = ParamValidator(self.command_name, validations)
 
         # TODO: Add cloud client
-        self._cloud_client = None
+        self._cloud_service = CloudFileService()
+        self._local_service = LocalFileService()
 
     def validate_params(self):
         return self._validator.validate(self.args)

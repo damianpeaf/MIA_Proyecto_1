@@ -29,3 +29,6 @@ class CommandProxy:
 
         # Execute command
         return command.execute()
+
+    def reset(self):
+        CommandProxy.command_config = None
