@@ -1,3 +1,4 @@
+from commands import CommandProxy
 from analyzer.parser import parser
 
 
@@ -9,10 +10,11 @@ def main():
             break
         if not s:
             continue
-        result = parser.parse(s)
-        print(result)
-        break
+        return parser.parse(s)
 
 
 if __name__ == '__main__':
-    main()
+    param_name, params = main()
+
+    proxy = CommandProxy()
+    proxy.execute(param_name, params)
