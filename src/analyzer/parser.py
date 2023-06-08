@@ -14,12 +14,12 @@ tokens = lexer.tokens
 def p_init(p):
     '''init : COMMAND parameters 
             | COMMAND'''
-
-    merge_params = {
-        **p[2],
-    }
-
-    p[0] = (p[1], merge_params) if p[2] is not None else (p[1], {})
+    if len(p) > 2:
+        p[0] = (p[1].lower(), {
+            **p[2]
+        })
+    else:
+        p[0] = (p[1], {})
 
 
 def p_parameters(p):
@@ -33,7 +33,7 @@ def p_parameters(p):
 
 def p_parameter(p):
     'parameter : PARAM ARROW VALUE'
-    p[0] = {p[1]: p[3]}
+    p[0] = {p[1].lstrip('-').lower(): p[3]}
 
 
 def p_error(p):
