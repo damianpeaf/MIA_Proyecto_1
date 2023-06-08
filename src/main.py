@@ -1,25 +1,29 @@
 from commands import CommandProxy, Logger
 from analyzer.parser import parser
 
+commands = [
+    'Configure -type->local -encrypt_log->false -encrypt_read->false',
+    'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt'
+]
+
 
 def main():
-    while True:
+    for command in commands:
         try:
-            # s = 'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt'
-            s = 'Configure -type->local -encrypt_log->false -encrypt_read->false'
+            s = command
         except EOFError:
             break
         if not s:
             continue
-        return parser.parse(s)
+        param_name, params = parser.parse(s)
+
+        proxy = CommandProxy()
+        result = proxy.execute(param_name, params)
+
+        print(Logger.log_messages)
+
+        print(CommandProxy.command_config)
 
 
 if __name__ == '__main__':
-    param_name, params = main()
-
-    proxy = CommandProxy()
-    result = proxy.execute(param_name, params)
-
-    print(Logger.log_messages)
-
-    print(CommandProxy.command_config)
+    main()
