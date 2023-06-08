@@ -23,17 +23,17 @@ def test_create():
 
         # initial config
         proxy.execute('configure', {
-            'type': 'local',
+            'type': 'cloud',
             'encrypt_log': 'false',
             'encrypt_read': 'false',
         })
 
-        # * LOCAL ENVIRONMENT
+        # * CLOUD ENVIRONMENT
 
         print('\n------ Create prueba1.txt on /carpeta1/ ------')
         proxy.execute('create', {
             'name': 'prueba2.txt',
-            'path': '/carpeta 2',
+            'path': '/carpeta3/carpeta2/carpetita espacio',
             'body': 'contenido del archivo'
         })
 

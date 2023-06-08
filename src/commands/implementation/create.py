@@ -35,10 +35,26 @@ class CreateCommand(CommandStrategy):
         body = self.args['body']
         path = self.args['path']
 
+        alternative_msg = None
+        status = True
+
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            resp = self._cloud_service.create_file(name, body, path)
+
+            if resp:
+                alternative_msg = resp['msg']
+                status = resp['ok']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
             self._local_service.create_file(name, body, path)
 
+        if alternative_msg and status:
+            self.success(alternative_msg)
+            return True
+        elif alternative_msg and not status:
+            self.add_error(alternative_msg)
+            return False
+
         self.success(f"Archivo '{name}' creado con exito en la ruta '{path}'")
+
         return True

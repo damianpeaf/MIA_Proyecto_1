@@ -6,6 +6,8 @@ from .config import CommandConfig
 from .validator import ParamValidator
 from .logger import Logger, OperationType
 
+default_cloud_service = CloudFileService()
+
 
 class CommandStrategy(ABC):
 
@@ -29,7 +31,7 @@ class CommandStrategy(ABC):
         self._validator = ParamValidator(self.command_name, validations)
 
         # TODO: Add cloud client
-        self._cloud_service = CloudFileService()
+        self._cloud_service = default_cloud_service
         self._local_service = LocalFileService()
 
     def validate_params(self):
