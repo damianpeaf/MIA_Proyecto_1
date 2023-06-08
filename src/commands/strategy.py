@@ -21,11 +21,10 @@ class CommandStrategy(ABC):
 
     """
 
-    def __init__(self, command_name: str, args: dict[str, str], config: CommandConfig, validations: List[Dict[str, any]]):
+    def __init__(self, command_name: str, args: dict[str, str], validations: List[Dict[str, any]]):
         super().__init__()
         self.command_name = command_name
         self.args = args
-        self.config = config
         self._validator = ParamValidator(self.command_name, validations)
 
         # TODO: Add cloud client
@@ -39,6 +38,14 @@ class CommandStrategy(ABC):
 
     def success(self, message: str = ''):
         Logger.success(f'Comando {self.command_name} ejecutado con exito. {message}', OperationType.OUTPUT)
+
+    def get_config(self) -> CommandConfig:
+        from .proxy import CommandProxy
+        return CommandProxy.command_config
+
+    def set_config(self, config: CommandConfig):
+        from .proxy import CommandProxy
+        CommandProxy.command_config = config
 
     @abstractmethod
     def execute(self) -> bool:

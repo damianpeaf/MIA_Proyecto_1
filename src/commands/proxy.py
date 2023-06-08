@@ -12,7 +12,7 @@ class CommandProxy:
         self._factory = CommandFactory()
 
     def execute(self, command_name: str, args: dict[str, str]):
-        command = self._factory.get_command(command_name, args, CommandProxy.command_config)
+        command = self._factory.get_command(command_name, args)
 
         # Command related validations
         if command is None:

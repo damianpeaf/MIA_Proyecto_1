@@ -31,6 +31,10 @@ class ParamValidator:
             validation for validation in self._validations if validation.obligatory
         ]
 
+        self._optional = [
+            validation for validation in self._validations if not validation.obligatory
+        ]
+
     def validate(self,  params: dict[str, str]):
 
         errors = []
@@ -42,9 +46,14 @@ class ParamValidator:
                 errors.append(f"El parametro {validation_obj.param_name} es obligatorio")
                 params[validation_obj.param_name] = None  # add param to params as None
 
+        # check optional params
+        for validation_obj in self._optional:
+            if validation_obj.param_name not in params:
+                params[validation_obj.param_name] = None
+
         # check params validator functions
         for validation_obj in self._validations:
-            if validation_obj.param_name in params:
+            if (validation_obj.param_name in params) and (params[validation_obj.param_name] is not None):
                 if not validation_obj.validator(params[validation_obj.param_name]):
                     errors.append(f"El parametro {validation_obj.param_name} es invalido")
 
@@ -52,7 +61,6 @@ class ParamValidator:
         for param_name in params:
             if param_name not in [validation_obj.param_name for validation_obj in self._validations]:
                 warnings.append(f"El parametro {param_name} no es necesario")
-                del params[param_name]  # remove param from params
 
         # Add logs
 

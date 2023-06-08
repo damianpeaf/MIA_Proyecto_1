@@ -2,6 +2,10 @@ from ..config import CommandEnvironment
 
 
 def is_enviroment(value: str):
+
+    if value is None:
+        return False
+
     if value.lower() in ['local', 'cloud']:
         return True
     else:
@@ -9,6 +13,10 @@ def is_enviroment(value: str):
 
 
 def is_bool(value: str):
+
+    if value is None:
+        return False
+
     if value.lower() in ['true', 'false']:
         return True
     else:

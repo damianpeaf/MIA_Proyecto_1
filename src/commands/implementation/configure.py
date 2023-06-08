@@ -29,8 +29,8 @@ configure_validations = [
 
 class ConfigureCommand(CommandStrategy):
 
-    def __init__(self, args: dict[str, str], config: CommandConfig):
-        super().__init__("configure", args, config, configure_validations)
+    def __init__(self, args: dict[str, str]):
+        super().__init__("configure", args, configure_validations)
 
     def execute(self):
 
@@ -51,15 +51,12 @@ class ConfigureCommand(CommandStrategy):
                 )
                 return False
 
-        self.config = CommandConfig(
+        self.set_config(CommandConfig(
             enviroment_type,
             encrypt_log,
             encrypt_read,
             encryption_key
-        )
+        ))
 
         self.success('Configuracion guardada con exito')
-
-        print(self.config)
-
         return True
