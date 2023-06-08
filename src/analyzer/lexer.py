@@ -1,17 +1,18 @@
 from ply import lex
 
-states = (
+states: tuple[tuple[str, str], ...] = (
     ('valueState', 'exclusive'),
 )
 
 # List of token names.   This is always required
 
-tokens = (
+tokens: tuple[str, ...] = (
     'ARROW',
     'COMMAND',
     'PARAM',
     'VALUE',
 )
+
 
 # Regular expression rules for simple tokens
 

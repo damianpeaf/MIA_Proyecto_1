@@ -25,6 +25,14 @@ def is_bool(value: str):
         return False
 
 
+def path_exists(value: str) -> bool:
+    return True if path.exists(value) else False
+
+
+def file_exists(value: str) -> bool:
+    return True if path.isfile(value) else False
+
+
 def is_path(value: str):
 
     if path.isabs(path.normpath(value)):
