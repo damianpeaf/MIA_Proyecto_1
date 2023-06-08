@@ -1,3 +1,5 @@
+from os import path
+
 from ..config import CommandEnvironment
 
 
@@ -18,6 +20,14 @@ def is_bool(value: str):
         return False
 
     if value.lower() in ['true', 'false']:
+        return True
+    else:
+        return False
+
+
+def is_path(value: str):
+
+    if path.isabs(path.normpath(value)):
         return True
     else:
         return False
