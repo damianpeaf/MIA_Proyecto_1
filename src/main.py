@@ -5,8 +5,8 @@ from analyzer.parser import parser
 def main():
     while True:
         try:
-            s = 'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt'
-            # s = 'Configure -type->local -encrypt_log->false -encrypt_read->false'
+            # s = 'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt'
+            s = 'Configure -type->local -encrypt_log->false -encrypt_read->false'
         except EOFError:
             break
         if not s:
@@ -15,14 +15,10 @@ def main():
 
 
 if __name__ == '__main__':
-    # param_name, params = main()
+    param_name, params = main()
 
     proxy = CommandProxy()
-    result = proxy.execute('configure', {
-        'type': 'local',
-        'encrypt_log': 'false',
-        'encrypt_read': 'false',
-    })
+    result = proxy.execute(param_name, params)
 
     print(Logger.log_messages)
 

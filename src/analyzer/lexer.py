@@ -16,7 +16,7 @@ tokens = (
 # Regular expression rules for simple tokens
 
 t_COMMAND = r'[a-zA-Z]+'
-t_PARAM = r'-[a-zA-Z]+'
+t_PARAM = r'-[a-zA-Z_]+'
 t_VALUE = r'[^->\s]+'
 
 # Get value for params
