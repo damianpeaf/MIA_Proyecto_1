@@ -40,6 +40,7 @@ class ParamValidator:
         for validation_obj in self._obligatory:
             if validation_obj.param_name not in params:
                 errors.append(f"El parametro {validation_obj.param_name} es obligatorio")
+                params[validation_obj.param_name] = None  # add param to params as None
 
         # check params validator functions
         for validation_obj in self._validations:
@@ -51,12 +52,16 @@ class ParamValidator:
         for param_name in params:
             if param_name not in [validation_obj.param_name for validation_obj in self._validations]:
                 warnings.append(f"El parametro {param_name} no es necesario")
+                del params[param_name]  # remove param from params
 
         # Add logs
-        for error in errors:
+
+        command_description = f"En el comando '{self.command_name}': "
+
+        for error in [command_description+error for error in errors]:
             Logger.error(error, OperationType.INPUT)
 
-        for warning in warnings:
+        for warning in [command_description+warning for warning in warnings]:
             Logger.warning(warning, OperationType.INPUT)
 
         if len(errors) > 0:

@@ -5,7 +5,10 @@ from .implementation import *
 
 class CommandFactory:
 
-    def get_command(command_name: str, args: dict[str, str], config: CommandConfig):
+    def __init__(self):
+        pass
+
+    def get_command(self, command_name: str, args: dict[str, str], config: CommandConfig):
 
         # ? Make config accssible from command implementations (CommandProxy.command_config)
 

@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 from .config import CommandConfig
 from .validator import ParamValidator
+from .logger import Logger, OperationType
 
 
 class CommandStrategy(ABC):
@@ -32,6 +33,12 @@ class CommandStrategy(ABC):
 
     def validate_params(self):
         return self._validator.validate(self.args)
+
+    def add_error(self, error: str, operation_type: OperationType = OperationType.OUTPUT):
+        Logger.error(f"En el comando: '{self.command_name}': " + error, operation_type)
+
+    def success(self, message: str = ''):
+        Logger.success(f'Comando {self.command_name} ejecutado con exito. {message}', OperationType.OUTPUT)
 
     @abstractmethod
     def execute(self) -> bool:
