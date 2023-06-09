@@ -2,8 +2,10 @@ from os import (
     path,
     mkdir,
     makedirs,
-    rename
+    rename,
+    remove
 )
+from shutil import rmtree
 from .local_paths import LOCAL_ROOT_PATH
 
 
@@ -67,4 +69,55 @@ class LocalFileService:
         return {
             'ok': True,
             'msg': f"Archivo '{relative_path}' renombrado con exito"
+        }
+
+    def delete_resource(self, relative_path: str, file_name: str = None):
+
+        if file_name:
+            return self._delete_file(relative_path, file_name)
+        else:
+            return self._delete_directory(relative_path)
+
+    def _delete_file(self, relative_path: str, file_name: str):
+
+        # Validate if dir/file exists
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        file_path = path.join(LOCAL_ROOT_PATH, relative_path, file_name)
+
+        if not path.exists(file_path):
+            return {
+                'ok': False,
+                'msg': f"El archivo '{file_name}' no existe en la ruta '{relative_path}'"
+            }
+
+        # Delete
+        remove(file_path)
+
+        return {
+            'ok': True,
+            'msg': f"Archivo '{relative_path}' eliminado con exito"
+        }
+
+    def _delete_directory(self, relative_path: str):
+
+        # Validate if dir/file exists
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        dir_path = path.join(LOCAL_ROOT_PATH, relative_path)
+
+        if not path.exists(dir_path):
+            return {
+                'ok': False,
+                'msg': f"El directorio '{relative_path}' no existe"
+            }
+
+        # Delete directory even if it has files
+        rmtree(dir_path)
+
+        return {
+            'ok': True,
+            'msg': f"Directorio '{relative_path}' eliminado con exito"
         }
