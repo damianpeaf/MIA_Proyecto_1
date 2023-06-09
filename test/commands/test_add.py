@@ -65,6 +65,24 @@ def test_add():
         Logger.print_logs()
         Logger.clear_logs()
 
+        # ! success cloud
+
+        print('\n------ Success cloud ------')
+
+        proxy.execute('configure', {
+            'type': 'cloud',
+            'encrypt_log': 'false',
+            'encrypt_read': 'false',
+        })
+
+        proxy.execute('add', {
+            'path': '/sub1/prueba1.txt',
+            'body': '\n nuevo contenido para prueba1.txt en la nube'
+        })
+
+        Logger.print_logs()
+        Logger.clear_logs()
+
         assert True
     except Exception as e:
         print(e)

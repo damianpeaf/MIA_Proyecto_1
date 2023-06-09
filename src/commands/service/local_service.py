@@ -31,6 +31,13 @@ class LocalFileService:
                 'msg': f"La ruta '{relative_path}' no existe"
             }
 
+        # Check if dir is a file
+        if path.isdir(dir_path):
+            return {
+                'ok': False,
+                'msg': f"La ruta '{relative_path}' es un directorio"
+            }
+
         # Add content to file
         with open(dir_path, 'a') as file:
             file.write(body)

@@ -31,7 +31,12 @@ class AddCommand(CommandStrategy):
         status = True
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+
+            response = self._cloud_service.add_content(current_path, body)
+
+            alternative_msg = response['msg']
+            status = response['ok']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
 
             response = self._local_service.add_content(current_path, body)
