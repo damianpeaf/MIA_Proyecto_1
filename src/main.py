@@ -3,7 +3,7 @@ from analyzer.parser import parser
 
 commands = [
     'Configure -type->local -encrypt_log->false -encrypt_read->false',
-    'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt'
+    'rEnAme -pAth->/"carpeta1"/prueba1.txt -name->b1.txt'
 ]
 
 
@@ -16,13 +16,15 @@ def main():
         if not s:
             continue
         param_name, params = parser.parse(s)
+        print(param_name)
+        print(params)
 
-        proxy = CommandProxy()
-        result = proxy.execute(param_name, params)
+        # proxy = CommandProxy()
+        # result = proxy.execute(param_name, params)
 
-        print(Logger.log_messages)
+        # print(Logger.log_messages)
 
-        print(CommandProxy.command_config)
+        # print(CommandProxy.command_config)
 
 
 if __name__ == '__main__':
