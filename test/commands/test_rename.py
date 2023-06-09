@@ -58,7 +58,7 @@ def test_rename():
 
         print('\n------ Rename prueba1.txt to b1.txt on /carpeta3/carpeta2/carpetita espacio/prueba2.txt ------')
         proxy.execute('rename', {
-            'path': '/carpeta3/carpeta2/carpetita espacio/prueba2.txt',
+            'path': '/carpeta3/carpeta2/carpeta1/prueba2.txt',
             'name': 'b1.txt'
         })
 

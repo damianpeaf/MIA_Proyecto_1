@@ -95,11 +95,38 @@ class CloudFileService:
         parent_id = self._root_id
 
         for folder_name in path.split('/')[:-1]:
-            print(folder_name)
-            # query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
+            if folder_name == '':
+                continue
+            query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
 
-            # response = self._drive_service.files().list(
-            #     q=query, fields='files(id)').execute()
+            response = self._drive_service.files().list(
+                q=query, fields='files(id)').execute()
+            files = response.get('files', [])
+
+            print('Nombre de carpeta: ', folder_name, 'Parent id: ', parent_id)
+
+            if len(files) > 0:
+                parent_id = files[0].get('id')
+            else:
+                return None
+
+        return parent_id
+
+    def _get_file_dir(self, parent_id: str, name: str):
+
+        if self._drive_service is None:
+            return
+
+        query = f"name='{name}' and '{parent_id}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id)').execute()
+        files = response.get('files', [])
+
+        if len(files) > 0:
+            return files[0].get('id')
+        else:
+            return None
 
     def create_file(self, name, content, path):
 
@@ -166,11 +193,51 @@ class CloudFileService:
 
         # Get parent id
         parent_id = self._get_parent_id(relative_path)
-        # print(parent_id)
 
-        # Check if is a file or a directory
-        # print(relative_path)
+        # Check if parent exists
+        if parent_id is None:
+            return {
+                'msg': 'No se encontró la ruta especificada',
+                'ok': False
+            }
 
-        # Search if file/dir exists in parent
+        # Check if file exists
+        file_to_rename_id = self._get_file_dir(
+            parent_id, relative_path.split('/')[-1])
+
+        if file_to_rename_id is None:
+            return {
+                'msg': 'No se encontró el archivo especificado',
+                'ok': False
+            }
+
+        # Check if new name exists
+        file_exists = self._get_file_dir(
+            parent_id, new_name)
+
+        if file_exists is not None and file_to_rename_id:
+            return {
+                'msg': 'Ya existe un archivo/directorio con ese nombre en la ruta especificada',
+                'ok': False
+            }
 
         # Rename
+        file_metadata = {
+            'name': new_name
+        }
+
+        try:
+            file = self._drive_service.files().update(
+                fileId=file_to_rename_id, body=file_metadata, fields='id').execute()
+
+            return {
+                'msg': 'Archivo renombrado con exito',
+                'ok': True,
+                'file_id': file.get('id')
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'msg': 'Ocurrio un error al renombrar el archivo',
+                'ok': False
+            }
