@@ -22,13 +22,14 @@ class RenameCommand(CommandStrategy):
     def __init__(self, args: dict[str, str]):
         super().__init__("rename", args,  rename_validations)
 
-    def execute(self):
+    def execute(self) -> bool:
 
         # Params
         args = self.args
         current_path = args['path']
         new_name = args['name']
 
+        alternative_msg = None
         status = True
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
@@ -40,13 +41,12 @@ class RenameCommand(CommandStrategy):
             resp: bool = self._local_service.rename_file_dir(
                 current_path, new_name)
 
-            if not resp:
-                self.add_error(
-                    f'No se pudo renombrar el archivo {current_path}',
-                    OperationType.OUTPUT
-                )
-                return False
+            alternative_msg = resp['msg']
+            status = resp['ok']
 
-            self.success('Archivo renombrado exitosamente')
-
-        return False
+        if alternative_msg and status:
+            self.success(alternative_msg)
+            return True
+        elif alternative_msg and not status:
+            self.add_error(alternative_msg)
+            return False
