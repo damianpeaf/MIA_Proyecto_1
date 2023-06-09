@@ -46,6 +46,25 @@ def test_rename():
         Logger.print_logs()
         Logger.clear_logs()
 
+        # * CLOUD ENVIRONMENT
+
+        # initial config
+        proxy.reset()
+        proxy.execute('configure', {
+            'type': 'cloud',
+            'encrypt_log': 'false',
+            'encrypt_read': 'false',
+        })
+
+        print('\n------ Rename prueba1.txt to b1.txt on /carpeta3/carpeta2/carpetita espacio/prueba2.txt ------')
+        proxy.execute('rename', {
+            'path': '/carpeta3/carpeta2/carpetita espacio/prueba2.txt',
+            'name': 'b1.txt'
+        })
+
+        Logger.print_logs()
+        Logger.clear_logs()
+
         assert True
     except Exception as e:
         print(e)

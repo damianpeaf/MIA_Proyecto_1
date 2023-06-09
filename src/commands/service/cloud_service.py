@@ -35,7 +35,7 @@ class CloudFileService:
         if self._drive_service is None:
             return
 
-        # ! no cuetan las carpetas eliminadas
+        # ! no cuentan las carpetas eliminadas
 
         # check if folder exists
         query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
@@ -86,6 +86,20 @@ class CloudFileService:
 
         # last folder id
         return parent_id
+
+    def _get_parent_id(self, path: str) -> str:
+
+        if self._drive_service is None:
+            return
+
+        parent_id = self._root_id
+
+        for folder_name in path.split('/')[:-1]:
+            print(folder_name)
+            # query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
+
+            # response = self._drive_service.files().list(
+            #     q=query, fields='files(id)').execute()
 
     def create_file(self, name, content, path):
 
@@ -146,4 +160,17 @@ class CloudFileService:
             }
 
     def rename_file_dir(self, relative_path: str, new_name: str):
-        pass
+
+        if self._drive_service is None:
+            return
+
+        # Get parent id
+        parent_id = self._get_parent_id(relative_path)
+        # print(parent_id)
+
+        # Check if is a file or a directory
+        # print(relative_path)
+
+        # Search if file/dir exists in parent
+
+        # Rename

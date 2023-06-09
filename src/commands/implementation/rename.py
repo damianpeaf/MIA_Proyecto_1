@@ -33,9 +33,12 @@ class RenameCommand(CommandStrategy):
         status = True
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            resp: bool = self._cloud_service.rename_file_dir(
+            resp = self._cloud_service.rename_file_dir(
                 current_path, new_name)
-            return True
+            if resp:
+                alternative_msg = resp['msg']
+                status = resp['ok']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
 
             resp: bool = self._local_service.rename_file_dir(
