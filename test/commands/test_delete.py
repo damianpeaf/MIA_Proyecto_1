@@ -22,12 +22,12 @@ def test_delete():
 
         # initial config
         proxy.execute('configure', {
-            'type': 'local',
+            'type': 'cloud',
             'encrypt_log': 'false',
             'encrypt_read': 'false',
         })
 
-        # * LOCAL ENVIRONMENT
+        # * CLOUD ENVIRONMENT
 
         print('\n------ Delete prueba1.txt on /carpeta1/ ------')
 
@@ -46,13 +46,13 @@ def test_delete():
         Logger.print_logs()
         Logger.clear_logs()
 
-        print('\n------ Delete /carpeta1/ folder ------')
-        # create file
-        # proxy.execute('create', {
-        #     'name': 'prueba1.txt',
-        #     'path': '/carpeta1/',
-        #     'body': 'hola mundo'
-        # })
+        # print('\n------ Delete /carpeta1/ folder ------')
+        # # create file
+        # # proxy.execute('create', {
+        # #     'name': 'prueba1.txt',
+        # #     'path': '/carpeta1/',
+        # #     'body': 'hola mundo'
+        # # })
 
         proxy.execute('delete', {
             'path': '/carpeta1/',

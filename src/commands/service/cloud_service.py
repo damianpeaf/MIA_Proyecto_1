@@ -241,3 +241,60 @@ class CloudFileService:
                 'msg': 'Ocurrio un error al renombrar el archivo',
                 'ok': False
             }
+
+    def _search_resource(self, relative_path: str, file_name: str = None) -> str:
+
+        if self._drive_service is None:
+            return
+
+        full_path = relative_path
+
+        if file_name:
+            full_path += '/' + file_name
+
+        parent_id = self._root_id
+
+        for resource_name in full_path.split('/'):
+
+            if resource_name == '':
+                continue
+
+            query = f"name='{resource_name}' and '{parent_id}' in parents and trashed=false"
+
+            response = self._drive_service.files().list(
+                q=query, fields='files(id)').execute()
+            files = response.get('files', [])
+
+            if len(files) > 0:
+                parent_id = files[0].get('id')
+            else:
+                return None
+
+        return parent_id
+
+    def delete_resource(self, relative_path: str, file_name: str = None):
+
+        resource_id = self._search_resource(relative_path, file_name)
+
+        resource_type = 'directorio' if file_name == None else 'archivo'
+
+        if resource_id == None:
+            return {
+                'msg': f'No se encontró el {resource_type} especificado',
+                'ok': False
+            }
+
+        try:
+
+            self._drive_service.files().delete(fileId=resource_id).execute()
+
+            return {
+                'msg': f'{resource_type} eliminado con exito',
+                'ok': True
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'msg': f'Ocurrio un error al {resource_type} el archivo',
+                'ok': False
+            }

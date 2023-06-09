@@ -30,7 +30,11 @@ class DeleteCommand(CommandStrategy):
         status = True
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            result = self._cloud_service.delete_resource(path, name)
+
+            msg = result['msg']
+            status = result['ok']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
             result = self._local_service.delete_resource(path, name)
 
