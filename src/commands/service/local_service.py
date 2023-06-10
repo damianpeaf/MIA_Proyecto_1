@@ -84,7 +84,31 @@ class LocalFileService:
             return self._delete_directory(relative_path)
 
     def modify_resource(self, relative_path: str, body: str) -> dict:
-        pass
+
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        dir_path = path.join(LOCAL_ROOT_PATH, relative_path)
+
+        if not path.exists(dir_path):
+            return {
+                'ok': False,
+                'msg': f"La ruta '{relative_path}' no existe"
+            }
+
+        if path.isdir(dir_path):
+            return {
+                'ok': False,
+                'msg': f"La ruta '{relative_path}' es un directorio"
+            }
+
+        with open(dir_path, 'w') as file:
+            file.write(body)
+
+        return {
+            'ok': True,
+            'msg': f"Contenido modificado con exito en '{relative_path}'"
+        }
 
     def rename_file_dir(self, relative_path: str, new_name: str):
 

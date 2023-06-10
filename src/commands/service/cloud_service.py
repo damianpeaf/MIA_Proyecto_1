@@ -31,7 +31,7 @@ class CloudFileService:
 
         self._root_id = self._get_root()
 
-    def add_content(self, relative_path: str, body: str):
+    def add_content(self, relative_path: str, body: str, is_add: bool = False) -> dict[str, str]:
         if self._drive_service is None:
             return
 
@@ -75,21 +75,26 @@ class CloudFileService:
                 'msg': 'No se puede agregar contenido a un archivo que no sea de texto plano'
             }
 
-        request = self._drive_service.files().get_media(fileId=file_id)
-        file_content = request.execute().decode('utf-8')
+        # We can use this function to add/modify content
+        new_content_file = body
 
-        new_content_file = f'{file_content}{body}'
+        # If is add, we need to get the file content and add the new content
+        if is_add:
+            request = self._drive_service.files().get_media(fileId=file_id)
+            file_content = request.execute().decode('utf-8')
+            new_content_file = file_content + '\n' + body
 
-        # Update file content
+        # Update/add file content
         media_body = MediaIoBaseUpload(
             io.BytesIO(new_content_file.encode('utf-8')), mimetype='text/plain')
 
+        # Update file
         self._drive_service.files().update(
             fileId=file_id, media_body=media_body).execute()
 
         return {
             'ok': True,
-            'msg': f'Se agregó el contenido al archivo {file_name}'
+            'msg': f'Se agregó el contenido al archivo {file_name}' if is_add else f'Se modificó el contenido del archivo {file_name}'
         }
 
     def create_file(self, name, content, path):

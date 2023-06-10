@@ -1,6 +1,6 @@
 from .common_validators import is_path
 from ..strategy import CommandStrategy
-from ..config import CommandConfig, CommandEnvironment
+from ..config import CommandEnvironment
 
 add_validations = [
     {
@@ -32,7 +32,8 @@ class AddCommand(CommandStrategy):
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
 
-            response = self._cloud_service.add_content(current_path, body)
+            response = self._cloud_service.add_content(
+                current_path, body, True)
 
             alternative_msg = response['msg']
             status = response['ok']
