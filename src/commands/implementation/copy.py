@@ -50,12 +50,13 @@ class CopyCommand(CommandStrategy):
             if 'warnings' in resp:
                 warnings = resp['warnings']
 
+        for warning in warnings:
+            self.warning(warning)
+
         if ok:
             self.success(msg)
         else:
             self.add_error(msg)
-
-        for warning in warnings:
-            self.warning(warning)
+            return False
 
         return True
