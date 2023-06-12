@@ -41,7 +41,7 @@ class RenameCommand(CommandStrategy):
 
         elif self.get_config().environment == CommandEnvironment.LOCAL:
 
-            resp: bool = self._local_service.rename_file_dir(
+            resp = self._local_service.rename_file_dir(
                 current_path, new_name)
 
             alternative_msg = resp['msg']

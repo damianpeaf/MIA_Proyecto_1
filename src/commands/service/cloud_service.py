@@ -2,11 +2,12 @@ from __future__ import print_function
 
 import os.path
 import tempfile
+import io
 
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 from io import BytesIO
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -30,103 +31,71 @@ class CloudFileService:
 
         self._root_id = self._get_root()
 
-    def _create_folder(self, name, parent_id=None):
-
+    def add_content(self, relative_path: str, body: str, is_add: bool = False) -> dict[str, str]:
         if self._drive_service is None:
             return
 
-        # ! no cuentan las carpetas eliminadas
+        # Check if is dir or file
+        # If is dir, return error because is not supported, only files
+        # If is file, add content to file
 
-        # check if folder exists
-        query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
+        file_name: str = relative_path.split('/')[-1]
 
-        if parent_id:
-            query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
+        if file_name.find('.') == -1:
+            return {
+                'ok': False,
+                'msg': 'No se puede agregar contenido a un directorio'
+            }
 
-        response = self._drive_service.files().list(
-            q=query, fields='files(id)').execute()
-        files = response.get('files', [])
+        # Get file id
+        resource_id = self._get_parent_id(relative_path)
 
-        if len(files) > 0:
-            return files[0].get('id')
+        if resource_id is None:
+            return {
+                'ok': False,
+                'msg': f'La ruta {relative_path} no existe'
+            }
 
-        file_metadata = {
-            'name': name,
-            'mimeType': 'application/vnd.google-apps.folder'
+        # Check if file exists
+        file_id = self._get_file_dir(resource_id, file_name)
+
+        if file_id is None:
+            return {
+                'ok': False,
+                'msg': f'No se encontró el archivo especificado en la ruta {relative_path}'
+            }
+
+        # Get file content
+        file = self._drive_service.files().get(
+            fileId=file_id, fields='id, name, mimeType').execute()
+
+        if file.get('mimeType') != 'text/plain':
+            return {
+                'ok': False,
+                'msg': 'No se puede agregar contenido a un archivo que no sea de texto plano'
+            }
+
+        # We can use this function to add/modify content
+        new_content_file = body
+
+        # If is add, we need to get the file content and add the new content
+        if is_add:
+            request = self._drive_service.files().get_media(fileId=file_id)
+            file_content = request.execute().decode('utf-8')
+            new_content_file = file_content + '\n' + body
+
+        # Update/add file content
+        media_body = MediaIoBaseUpload(
+            io.BytesIO(new_content_file.encode('utf-8')), mimetype='text/plain')
+
+        # Update file
+        self._drive_service.files().update(
+            fileId=file_id, media_body=media_body).execute()
+
+        return {
+            'ok': True,
+            'msg': f'Se agregó el contenido al archivo {file_name}' if is_add else f'Se modificó el contenido del archivo {file_name}'
         }
-
-        if parent_id:
-            file_metadata['parents'] = [parent_id]
-
-        file = self._drive_service.files().create(
-            body=file_metadata, fields='id').execute()
-        return file.get('id')
-
-    def _get_root(self):
-
-        if self._drive_service is None:
-            return
-
-        #  Create root folder
-        return self._create_folder(ROOT_FOLDER_NAME)
-
-    def _create_directories(self, path):
-        # path looks like: /folder1/folder 2/folder3
-
-        if self._drive_service is None:
-            return
-
-        parent_id = self._root_id
-
-        for folder in path.split('/'):
-            if folder == '':
-                continue
-
-            parent_id = self._create_folder(folder, parent_id)
-
-        # last folder id
-        return parent_id
-
-    def _get_parent_id(self, path: str) -> str:
-
-        if self._drive_service is None:
-            return
-
-        parent_id = self._root_id
-
-        for folder_name in path.split('/')[:-1]:
-            if folder_name == '':
-                continue
-            query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
-
-            response = self._drive_service.files().list(
-                q=query, fields='files(id)').execute()
-            files = response.get('files', [])
-
-            print('Nombre de carpeta: ', folder_name, 'Parent id: ', parent_id)
-
-            if len(files) > 0:
-                parent_id = files[0].get('id')
-            else:
-                return None
-
-        return parent_id
-
-    def _get_file_dir(self, parent_id: str, name: str):
-
-        if self._drive_service is None:
-            return
-
-        query = f"name='{name}' and '{parent_id}' in parents and trashed=false"
-
-        response = self._drive_service.files().list(
-            q=query, fields='files(id)').execute()
-        files = response.get('files', [])
-
-        if len(files) > 0:
-            return files[0].get('id')
-        else:
-            return None
 
     def create_file(self, name, content, path):
 
@@ -242,6 +211,33 @@ class CloudFileService:
                 'ok': False
             }
 
+    def delete_resource(self, relative_path: str, file_name: str = None):
+
+        resource_id = self._search_resource(relative_path, file_name)
+
+        resource_type = 'directorio' if file_name == None else 'archivo'
+
+        if resource_id == None:
+            return {
+                'msg': f'No se encontró el {resource_type} especificado',
+                'ok': False
+            }
+
+        try:
+
+            self._drive_service.files().delete(fileId=resource_id).execute()
+
+            return {
+                'msg': f'{resource_type} eliminado con exito',
+                'ok': True
+            }
+        except Exception as e:
+            print(e)
+            return {
+                'msg': f'Ocurrio un error al {resource_type} el archivo',
+                'ok': False
+            }
+
     def _search_resource(self, relative_path: str, file_name: str = None) -> str:
 
         if self._drive_service is None:
@@ -272,29 +268,98 @@ class CloudFileService:
 
         return parent_id
 
-    def delete_resource(self, relative_path: str, file_name: str = None):
+    def _create_folder(self, name, parent_id=None):
 
-        resource_id = self._search_resource(relative_path, file_name)
+        if self._drive_service is None:
+            return
 
-        resource_type = 'directorio' if file_name == None else 'archivo'
+        # ! no cuentan las carpetas eliminadas
 
-        if resource_id == None:
-            return {
-                'msg': f'No se encontró el {resource_type} especificado',
-                'ok': False
-            }
+        # check if folder exists
+        query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
 
-        try:
+        if parent_id:
+            query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
 
-            self._drive_service.files().delete(fileId=resource_id).execute()
+        response = self._drive_service.files().list(
+            q=query, fields='files(id)').execute()
+        files = response.get('files', [])
 
-            return {
-                'msg': f'{resource_type} eliminado con exito',
-                'ok': True
-            }
-        except Exception as e:
-            print(e)
-            return {
-                'msg': f'Ocurrio un error al {resource_type} el archivo',
-                'ok': False
-            }
+        if len(files) > 0:
+            return files[0].get('id')
+
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.folder'
+        }
+
+        if parent_id:
+            file_metadata['parents'] = [parent_id]
+
+        file = self._drive_service.files().create(
+            body=file_metadata, fields='id').execute()
+        return file.get('id')
+
+    def _get_root(self):
+
+        if self._drive_service is None:
+            return
+
+        #  Create root folder
+        return self._create_folder(ROOT_FOLDER_NAME)
+
+    def _create_directories(self, path):
+        # path looks like: /folder1/folder 2/folder3
+
+        if self._drive_service is None:
+            return
+
+        parent_id = self._root_id
+
+        for folder in path.split('/'):
+            if folder == '':
+                continue
+
+            parent_id = self._create_folder(folder, parent_id)
+
+        # last folder id
+        return parent_id
+
+    def _get_parent_id(self, path: str) -> str:
+
+        if self._drive_service is None:
+            return
+
+        parent_id = self._root_id
+
+        for folder_name in path.split('/')[:-1]:
+            if folder_name == '':
+                continue
+            query = f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
+
+            response = self._drive_service.files().list(
+                q=query, fields='files(id)').execute()
+            files = response.get('files', [])
+
+            if len(files) > 0:
+                parent_id = files[0].get('id')
+            else:
+                return None
+
+        return parent_id
+
+    def _get_file_dir(self, parent_id: str, name: str):
+
+        if self._drive_service is None:
+            return
+
+        query = f"name='{name}' and '{parent_id}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id)').execute()
+        files = response.get('files', [])
+
+        if len(files) > 0:
+            return files[0].get('id')
+        else:
+            return None

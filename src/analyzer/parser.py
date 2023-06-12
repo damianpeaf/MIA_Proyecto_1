@@ -33,7 +33,7 @@ def p_parameters(p):
 
 def p_parameter(p):
     'parameter : PARAM ARROW VALUE'
-    p[0] = {p[1].lstrip('-').lower(): p[3]}
+    p[0] = {p[1].lstrip('-').lower(): p[3].replace('"', '')}
 
 
 def p_error(p):
