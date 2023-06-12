@@ -363,3 +363,183 @@ class CloudFileService:
             return files[0].get('id')
         else:
             return None
+
+    # from path posibly include file name
+    # change name is for decide if we want to change the name of the file if already exists or just add a warning
+    def copy_resource(self, from_path: str, to_path: str, change_name: bool):
+
+        from_id = self._search_resource(from_path)
+
+        if from_id is None:
+            return {
+                'msg': 'No se encontró el recurso especificado de origen',
+                'ok': False
+            }
+
+        to_id = self._search_resource(to_path)
+
+        if to_id is None:
+            return {
+                'msg': 'No se encontró el recurso especificado de destino',
+                'ok': False
+            }
+
+        # 'to' has to be a directory
+        to_resource = self._drive_service.files().get(fileId=to_id, fields='id, name, mimeType').execute()
+
+        if to_resource.get('mimeType') != 'application/vnd.google-apps.folder':
+            return {
+                'msg': 'El recurso de destino tiene que ser un directorio',
+                'ok': False
+            }
+
+        # check if 'from' is a file or directory
+        from_resource = self._drive_service.files().get(fileId=from_id, fields='id, name, mimeType').execute()
+
+        # if 'from' is a directory, copy directory content (entire structure) into 'to' directory
+        if from_resource.get('mimeType') == 'application/vnd.google-apps.folder':
+            return self._copy_directory_content(from_resource, to_id, change_name)
+
+        # just copy file into 'to' directory
+        return self._copy_file(from_resource, to_id, change_name)
+
+    def _copy_directory_content(self, from_resource: dict, to_id: str, change_name: bool):
+
+        # Copy the from_resource content, not the directory itself
+
+        # Get all files and directories inside from_resource
+        query = f"'{from_resource.get('id')}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id, name, mimeType)').execute()
+        files = response.get('files', [])
+
+        warnings = []
+
+        for file in files:
+
+            # subdirectory
+            if file.get('mimeType') == 'application/vnd.google-apps.folder':
+
+                # check if directory exists in 'to' directory
+                to_directory_id = self._get_file_dir(to_id, file.get('name'))
+
+                # if not exists, create directory
+                if to_directory_id is None:
+                    # create directory with same content
+                    created_folder = self._create_folder(file.get('name'), to_id)
+                    self._copy_directory_content(file, created_folder, change_name)
+
+                # if exists, evaluate change_name
+                else:
+                    if change_name:
+                        # change name
+                        new_name = self._get_new_name(file.get('name'), to_id)
+                        created_folder = self._create_folder(new_name, to_id)
+                        self._copy_directory_content(file, created_folder, change_name)
+                        warnings.append(f'El directorio {file.get("name")} ya existe en la ruta de destino, se creó con el nombre {new_name}')
+                    else:
+                        warnings.append(f'El directorio {file.get("name")} ya existe en la ruta de destino')
+                        continue
+
+            # file
+            else:
+
+                # check if file exists in 'to' directory
+                to_file_id = self._get_file_dir(to_id, file.get('name'))
+
+                # if not exists, create file
+                if to_file_id is None:
+                    self._copy_file(file, to_id, change_name)
+
+                # if exists, evaluate change_name
+                else:
+                    if change_name:
+                        # change name
+                        new_name = self._get_new_name(file.get('name'), to_id)
+                        self._copy_file(file, to_id, change_name)
+                        warnings.append(f'El archivo {file.get("name")} ya existe en la ruta de destino, se creó con el nombre {new_name}')
+                    else:
+                        warnings.append(f'El archivo {file.get("name")} ya existe en la ruta de destino')
+                        continue
+
+        return {
+            'msg': 'Directorio copiado con exito',
+            'ok': True,
+            'warnings': warnings
+        }
+
+    def _copy_file(self, from_resource: dict, to_id: str, change_name: bool):
+
+        # check if file exists in 'to' directory
+        to_file_id = self._get_file_dir(to_id, from_resource.get('name'))
+
+        # if not exists, create file
+        if to_file_id is None:
+            # copy file
+            file_metadata = {
+                'name': from_resource.get('name'),
+                'parents': [to_id]
+            }
+
+            file = self._drive_service.files().copy(
+                fileId=from_resource.get('id'), body=file_metadata).execute()
+
+            return {
+                'msg': f'Archivo {from_resource.get("name")} copiado con exito',
+                'ok': True
+            }
+
+        # if exists, evaluate change_name
+        else:
+            if change_name:
+                # change name
+                new_name = self._get_new_name(from_resource.get('name'), to_id)
+                file_metadata = {
+                    'name': new_name,
+                    'parents': [to_id]
+                }
+
+                file = self._drive_service.files().copy(
+                    fileId=from_resource.get('id'), body=file_metadata).execute()
+
+                return {
+                    'msg': f'Archivo {from_resource.get("name")} copiado con exito con el nombre {new_name}',
+                    'ok': True
+                }
+
+            else:
+                return {
+                    'msg': f'El archivo {from_resource.get("name")} ya existe en la ruta de destino',
+                    'ok': False
+                }
+
+    # search for a new name for the file. Like file(1).txt or file(2).txt or file(3).txt ...
+    def _get_new_name(self, name: str, parent_id: str) -> str:
+
+        # check if file exists
+        file_id = self._get_file_dir(parent_id, name)
+
+        if file_id is None:
+            return name
+
+        # if exists, search for a new name
+        counter = 1
+
+        # Consider the extension
+        file_name = name.split('.')[0]
+        file_extension = ''
+
+        if len(name.split('.')) > 1:
+            file_extension = '.' + name.split('.')[1]
+
+        while True:
+
+            new_name = f'{file_name}({counter}){file_extension}'
+
+            file_id = self._get_file_dir(parent_id, new_name)
+
+            if file_id is None:
+                return new_name
+
+            counter += 1

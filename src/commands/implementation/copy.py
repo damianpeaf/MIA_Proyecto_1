@@ -33,7 +33,14 @@ class CopyCommand(CommandStrategy):
         to_path = self.args['to']
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            resp = self._cloud_service.copy_resource(from_path, to_path, False)
+
+            ok = resp['ok']
+            msg = resp['msg']
+
+            if 'warnings' in resp:
+                warnings = resp['warnings']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
             resp = self._local_service.copy_resource(from_path, to_path)
 
