@@ -42,14 +42,14 @@ class TransferCommand(CommandStrategy):
             mode_env = 'local' if mode_param == CommandEnvironment.LOCAL else 'cloud'
 
             self.add_error(
-                f"Se ha configurado un modo de transferencia diferente al del entorno actual. Configurado inicialmente: {mode_env}, actual: {actual_env}"
+                f"Se ha configurado un modo de transferencia diferente al del entorno actual. Configurado inicialmente: {actual_env}, actual: {mode_env}"
             )
             return False
 
         resp = None
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            resp = self._cloud_service.transfer_resource(from_param, to_param)
         elif self.get_config().environment == CommandEnvironment.LOCAL:
             resp = self._local_service.transfer_resource(from_param, to_param)
 

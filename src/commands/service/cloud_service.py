@@ -116,7 +116,7 @@ class CloudFileService:
 
             if len(files) > 0:
                 return {
-                    'msg': 'El archivo ya existe en la ruta especificada',
+                    'msg': f"El archivo '{name}' ya existe en la ruta especificada '{path}'",
                     'file_id': files[0].get('id'),
                     'ok': False
                 }
@@ -142,7 +142,7 @@ class CloudFileService:
                 body=file_metadata, media_body=media, fields='id').execute()
 
             return {
-                'msg': 'Archivo creado con exito',
+                'msg': f"Archivo '{name}' creado con exito en la ruta especificada '{path}'",
                 'file_id': file.get('id'),
                 'ok': True
             }
@@ -543,3 +543,41 @@ class CloudFileService:
                 return new_name
 
             counter += 1
+
+    def transfer_resource(self, from_path: str, to_path: str):
+
+        to_id = self._search_resource(to_path)
+
+        if to_id is None:
+            self._create_directories(to_path)
+
+        # Copy resource
+        resp = self.copy_resource(from_path, to_path, True)
+
+        if not resp.get('ok'):
+            return resp
+
+        # Delete resource or directory content
+        resource_id = self._search_resource(from_path)
+
+        resource = self._drive_service.files().get(fileId=resource_id, fields='id, name, mimeType').execute()
+
+        if resource.get('mimeType') == 'application/vnd.google-apps.folder':
+            # Delete directory content, not the directory itself
+            query = f"'{resource.get('id')}' in parents and trashed=false"
+
+            response = self._drive_service.files().list(
+                q=query, fields='files(id, name, mimeType)').execute()
+            files = response.get('files', [])
+
+            for file in files:
+                self._drive_service.files().delete(fileId=file.get('id')).execute()
+        else:
+            # Delete file
+            self._drive_service.files().delete(fileId=resource.get('id')).execute()
+
+        return {
+            'msg': 'Recurso transferido con exito',
+            'ok': True,
+            'warnings': resp.get('warnings') if resp.get('warnings') else []
+        }
