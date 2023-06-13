@@ -42,6 +42,9 @@ class CommandStrategy(ABC):
     def success(self, message: str = ''):
         Logger.success(f'Comando {self.command_name} ejecutado con exito. {message}', OperationType.OUTPUT)
 
+    def warning(self, message: str = ''):
+        Logger.warning(f"Advertencia en el comando '{self.command_name}': {message}'", OperationType.OUTPUT)
+
     def get_config(self) -> CommandConfig:
         from .proxy import CommandProxy
         return CommandProxy.command_config

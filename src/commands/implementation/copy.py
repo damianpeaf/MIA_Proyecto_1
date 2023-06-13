@@ -1,9 +1,17 @@
+from .common_validators import is_path
 from ..strategy import CommandStrategy
 from ..config import CommandConfig, CommandEnvironment
 
 copy_validations = [
     {
-
+        "param_name": "from",
+        "obligatory": True,
+        "validator": lambda f: is_path(f)
+    },
+    {
+        "param_name": "to",
+        "obligatory": True,
+        "validator": lambda f: is_path(f)
     }
 ]
 
@@ -14,9 +22,41 @@ class CopyCommand(CommandStrategy):
         super().__init__("copy", args,  copy_validations)
 
     def execute(self):
+
+        # response
+        ok = False
+        msg = ''
+        warnings = []
+
+        # args
+        from_path = self.args['from']
+        to_path = self.args['to']
+
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            resp = self._cloud_service.copy_resource(from_path, to_path, False)
+
+            ok = resp['ok']
+            msg = resp['msg']
+
+            if 'warnings' in resp:
+                warnings = resp['warnings']
+
         elif self.get_config().environment == CommandEnvironment.LOCAL:
-            pass
+            resp = self._local_service.copy_resource(from_path, to_path)
+
+            ok = resp['ok']
+            msg = resp['msg']
+
+            if 'warnings' in resp:
+                warnings = resp['warnings']
+
+        for warning in warnings:
+            self.warning(warning)
+
+        if ok:
+            self.success(msg)
+        else:
+            self.add_error(msg)
+            return False
 
         return True
