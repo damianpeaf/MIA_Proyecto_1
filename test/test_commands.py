@@ -3,13 +3,13 @@ from pytest import mark
 
 test_cases = [
     'Configure -type->local -encrypt_log->false -encrypt_read->false',
-    'create -name->"prueba 2.txt" -path->/"carpeta 2/"-body->"Este es el contenido del archivo 2"',
+    'create -name->"prueba 2.txt" -path->/"carpeta 2"/-body->"Este es el contenido del archivo 2"',
     'delete -path->/carpeta1/ -name->prueba1.txt',
-    'delete -path->"/carpeta 2/"',
+    'delete -path->/"carpeta 2"/',
     'Copy -from->/carpeta1/prueba1.txt -to->/"carpeta 2"/',
-    'Copy -from->/"carpeta 2/"-to->/carpeta1/',
-    'transfer -from->/carpeta1/prueba1.txt -to->/"carpeta 2/"-mode->"local"',
-    'transfer -from->/"carpeta 2/"-to->/carpeta1/ -mode->"cloud"',
+    'Copy -from->/"carpeta 2"/-to->/carpeta1/',
+    'transfer -from->/carpeta1/prueba1.txt -to->/"carpeta 2"/-mode->"local"',
+    'transfer -from->/"carpeta 2"/-to->/carpeta1/ -mode->"cloud"',
     'rEnAme -pAth->/carpeta1/prueba1.txt -name->b1.txt',
     'modify -path->/carpeta1/prueba1.txt -body->" este es el nuevo contenido del archivo"',
     'add -path->/carpeta1/prueba1.txt -body->" este es el nuevo contenido del archivo"',

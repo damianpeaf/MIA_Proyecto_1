@@ -16,9 +16,8 @@ tokens: tuple[str, ...] = (
 
 # Regular expression rules for simple tokens
 
-t_COMMAND = r'[a-zA-Z]+'
+t_INITIAL_COMMAND = r'[a-zA-Z]+'
 t_PARAM = r'-[a-zA-Z_]+'
-t_VALUE = r'[^->\s]+'
 
 # Get value for params
 
@@ -39,8 +38,15 @@ def t_valueState_QUOTED_VALUE(t):
 
 
 def t_valueState_VALUE(t):
-    r'[^->\s]+'
+    r'[^-]+'
+    t.value = t.value.strip().replace('"', '')
     t.type = 'VALUE'
+    return t
+
+
+def t_valueState_end(t):
+    r'-[a-zA-Z_]+'
+    t.type = 'PARAM'
     t.lexer.begin('INITIAL')
     return t
 

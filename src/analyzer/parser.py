@@ -13,7 +13,9 @@ tokens = lexer.tokens
 
 def p_init(p):
     '''init : COMMAND parameters 
-            | COMMAND'''
+            | COMMAND
+            | VALUE parameters
+            | VALUE'''
     if len(p) > 2:
         p[0] = (p[1].lower(), {
             **p[2]
@@ -37,7 +39,7 @@ def p_parameter(p):
 
 
 def p_error(p):
-    print(f'Syntax error {p.value!r}, line {p.lineno}')
+    print(f'Syntax error {p.value!r}, line {p.lineno}', p)
 
 
 parser = yacc()
