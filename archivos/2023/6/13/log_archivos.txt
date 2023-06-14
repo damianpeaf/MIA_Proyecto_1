@@ -1,24 +1,31 @@
-[13/06/2023 18:49:29] - INPUT - INFO - Comando configure - type=cloud, encrypt_log=true, encrypt_read=false, llave=1234678901234567  - Entorno: None
-817e37448121829bf700638ed7169080d5e7f04f241665e7486ff1c5a469da9747f22551a210a8da379149d051bd8fb6df7853fa9b2f23d6440500e401a4761f701bfefbdd2e4a83955355885e3d46ddf4ce1f032bf00d3f6537c4933db773ba1936fd194a05680445d06a7926324232
-817e37448121829bf700638ed7169080dbaea82a77849a1397bd2b3767adad0cb7d2509e70a2e4d29e82a2848c4bddf0c2c615ac8c7c4d822a702843c0cee9ae60c0b2ae3e71d72aaabd2bdf6597537826fea331157c1021c0844b2385173f978eadc222afa85deab9186188d4ad226b90c6b139b1fc4d4c78a49923f4f7a675b1c80d76b510649e723e3e8c11246e70
-817e37448121829bf700638ed7169080061dd968e4b1a57042db9762fb79495c47f22551a210a8da379149d051bd8fb6f5b73bd7f2cf4da4bf79cee707d11ecaa4b5fdb99ba910fa99aabd50b619d4c09f6308e2a3d99024f3f3abb8a908f80ce11d22178c7b31c6983c249b61a6f3cd565c85671b1e616667344077c90588d5c1b380933841a9752c9f6acdf75f853d74b2fb4bcb290822ed7d2ca7952cfb8f
-817e37448121829bf700638ed7169080b1f256ca6c96da668fd5708881125337b7d2509e70a2e4d29e82a2848c4bddf0b2c67c354eaa9c280b468c64e450b1a72f5444742d7976e22bf0e526ead3b693a4deca6175d7a68f927d19d24d17befe5c4a4a6b94b2d1f55738e5b1751eeb061936fd194a05680445d06a7926324232
-817e37448121829bf700638ed7169080d4c3abb23ff52b92347d6c9448222ed547f22551a210a8da379149d051bd8fb6f5b73bd7f2cf4da4bf79cee707d11eca2c0f3559a7bc91af97b37e90e369a216f3ecec909c02d9fd207607a1ea8e4b2e376d98b7a7ffd75e7d243c2586f867d50b0afce7ee4aa84b4817a86af351f4caf59eb66d40b0c3b8ee081f5ef2583b1d1936fd194a05680445d06a7926324232
-817e37448121829bf700638ed7169080a37489c0eaf8a01b784317bdc035afb5b7d2509e70a2e4d29e82a2848c4bddf0c2c615ac8c7c4d822a702843c0cee9ae28ef6d44a9cf0005d1e061815913a9e8140a200c1b34d35dc3d2d26365be29528eadc222afa85deab9186188d4ad226b90c6b139b1fc4d4c78a49923f4f7a675b1c80d76b510649e723e3e8c11246e70
-817e37448121829bf700638ed7169080d4c3abb23ff52b92347d6c9448222ed585e6d587eaa284d9243f7ffe9f0613d430ba99ab5b1c0ca62ebb907fa16e0979027e27ee346bf2e07ffb33046a9703d5fa7b97133de27b555aef0a44ed5596732a601c93ca3c531d267370af1056bdc1098257a5d9365d915189aefcc01ddfe5cd5d5428faf81e1b958504eeff0cd43c04b653349b5e53ff59fb9f35c29f6a6b
-817e37448121829bf700638ed7169080a37489c0eaf8a01b784317bdc035afb572f4a840308c2a297669a10d1861a065d4c8cb9bb45cdbd1377dd1b5030059bceb286443a2a7c85034008df966209cf2b0b6edf4694605bf75fb8d17d9eeba667694861be6f891a2e22170f83d05a398b1c80d76b510649e723e3e8c11246e70
-817e37448121829bf700638ed7169080f65eaa8ee5f0dee21eb75819b573b49d7acdf4613b1e7a314ee7f6ce1942332682c583beeccd92d13c0a0de03fe7c7a47673942fa19d3791c89a36f9f6afd8e96f91b53f57106df284700674e7758a757eca6a05eccef382dc085cbcf8bbb8540ff1b336d86ce97ab72d5af99ac6a762f7e88f09d2d1146308565faa5136adc0a7c69cb2884ca8f32a2d462a8846452eced294a8647469a1fc9fdacc7def3d1e1b00b0e7889dbb906e0e42524a7872de
-817e37448121829bf700638ed7169080f65eaa8ee5f0dee21eb75819b573b49d7acdf4613b1e7a314ee7f6ce1942332682c583beeccd92d13c0a0de03fe7c7a455340d78ed6ca0b791a32b7edf537c987c373534e468321f095708ae8d590582d3599f50438a33ee281a5848aa7b716618671dadc7101128da1595b4c70c865d129a9fdc5b6f23aff20bd3b5f7b76667fc0e267b36d5563b25b5f803fd935f4ad3c019844d3e0da564f56795af1df5340d1f7747268f51719bb48228bed8f75b
-817e37448121829bf700638ed7169080f65eaa8ee5f0dee21eb75819b573b49d47f22551a210a8da379149d051bd8fb6c11228c74bfaf631dbb1b9b7ee3192351719e478c71665e6ad40ecd1858c977c578138e1c4d5a55b468afeac82149dc51b00b0e7889dbb906e0e42524a7872de
-[13/06/2023 18:50:22] - INPUT - INFO - Comando configure - type=cloud, encrypt_log=falsE, encrypt_read=false, llave=1234678901234567  - Entorno: None
-[13/06/2023 18:50:22] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: cloud
-[13/06/2023 18:50:22] - INPUT - INFO - Comando create - name=prueba1.txt, path=/carpeta1, body=contenido del archivo  - Entorno: cloud
-[13/06/2023 18:50:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta especificada '/carpeta1' - Entorno: cloud
-[13/06/2023 18:50:23] - INPUT - INFO - Comando create - name=hola.txt, path=/carpeta1/subcarpeta1, body=hola  - Entorno: cloud
-[13/06/2023 18:50:25] - OUTPUT - EXITO - Comando create - Archivo 'hola.txt' creado con exito en la ruta especificada '/carpeta1/subcarpeta1' - Entorno: cloud
-[13/06/2023 18:50:25] - INPUT - INFO - Comando create - name=prueba2.txt, path=/carpeta2, body=contenido del archivo  - Entorno: cloud
-[13/06/2023 18:50:25] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba2.txt' ya existe en la ruta especificada '/carpeta2' - Entorno: cloud
-[13/06/2023 18:50:25] - INPUT - INFO - Comando transfer - from=/carpeta1/, to=/carpeta2/, mode=cloud  - Entorno: cloud
-[13/06/2023 18:50:39] - OUTPUT - ADVERTENCIA - Comando 'transfer' - El directorio 'subcarpeta1' ya existe en la ruta de destino, se creó con el nombre 'subcarpeta1(12)' - Entorno: cloud
-[13/06/2023 18:50:39] - OUTPUT - ADVERTENCIA - Comando 'transfer' - El archivo 'prueba1.txt' ya existe en la ruta de destino, se creó con el nombre 'prueba1(13).txt' - Entorno: cloud
-[13/06/2023 18:50:39] - OUTPUT - EXITO - Comando transfer - Recurso transferido con exito - Entorno: cloud
+[13/06/2023 20:44:23] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia'  - Entorno: None
+[13/06/2023 20:44:23] - INPUT - INFO - Comando configure - type='local', encrypt_log='false', encrypt_read='false', llave='None'  - Entorno: None
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba1.txt', path='/carpeta1/', body='Este es el contenido del archivo1'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba2.txt', path='/carpeta1/', body='Este es el contenido del archivo2'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba1.txt  -path->/"Carpeta Ejemplo"/ -body->"Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo"', linea: 4 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba2.txt  -path->/"Carpeta Ejemplo"/ -body->"El sistema binario, también llamado sistema diádico​ en ciencias de la computación, es un sistema de numeración en el que los números son representados utilizando únicamente dos cifras: 0 (cero) y 1 (uno)."', linea: 5 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba3.txt  -path->/"Carpeta Ejemplo"/ -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 6 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre1.txt'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba1.txt' renombrado con exito - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'rename -path->/carpeta1/prueba1.txt -name->nuevo_nombre2.txt', linea: 8 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba2.txt' renombrado con exito - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'copy -from->/carpeta1/nuevo_nombre1.txt -to->/"Carpeta Ejemplo"/ ', linea: 10 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/nuevo_nombre2.txt -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 11 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando delete - path='/carpeta1/prueba2.txt', name='None'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - ERROR - Comando: 'delete' - El directorio 'carpeta1/prueba2.txt' no existe - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'delete -path->/"Carpeta Ejemplo"/prueba3.txt', linea: 13 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'modify -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 14 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'backup', linea: 15 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'add -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt  -body->/"De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red."/', linea: 16 - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba4.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo4'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba4.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba5.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo5'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba5.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba6.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo6'  - Entorno: local
+[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba6.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/ -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 20 - Entorno: local

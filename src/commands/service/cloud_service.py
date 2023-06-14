@@ -581,3 +581,42 @@ class CloudFileService:
             'ok': True,
             'warnings': resp.get('warnings') if resp.get('warnings') else []
         }
+
+    def get_file_content(self, relative_path: str):
+
+        if self._drive_service is None:
+            return
+
+        # Get file id
+        resource_id = self._search_resource(relative_path)
+
+        if resource_id is None:
+            return {
+                'ok': False,
+                'msg': f'La ruta {relative_path} no existe'
+            }
+
+        # Check if file exists
+        file = self._drive_service.files().get(
+            fileId=resource_id, fields='id, name, mimeType').execute()
+
+        if file.get('mimeType') != 'text/plain':
+            return {
+                'ok': False,
+                'msg': 'No se puede obtener el contenido de un archivo que no sea de texto plano'
+            }
+
+        # Get file content
+        request = self._drive_service.files().get_media(fileId=resource_id)
+
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        return {
+            'ok': True,
+            'msg': fh.getvalue().decode('utf-8')
+        }

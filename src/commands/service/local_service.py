@@ -359,3 +359,29 @@ class LocalFileService:
             'msg': f"'{from_path}' transferido con exito a la ruta '{to_path}'",
             'warnings': resp['warnings'] if 'warnings' in resp else []
         }
+
+    def get_file_content(self, relative_path: str) -> dict:
+
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        file_path = path.join(LOCAL_ROOT_PATH, relative_path)
+
+        if not path.exists(file_path):
+            return {
+                'ok': False,
+                'msg': f"El archivo '{relative_path}' no existe"
+            }
+
+        if path.isdir(file_path):
+            return {
+                'ok': False,
+                'msg': f"La ruta '{relative_path}' es un directorio"
+            }
+
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return {
+                'ok': True,
+                'msg': f"Contenido del archivo '{relative_path}' obtenido con exito",
+                'body': file.read()
+            }

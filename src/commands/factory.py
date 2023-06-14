@@ -28,5 +28,7 @@ class CommandFactory:
             return RenameCommand(args)
         elif command_name == 'transfer':
             return TransferCommand(args)
+        elif command_name == 'exec':
+            return ExecCommand(args)
 
         return None

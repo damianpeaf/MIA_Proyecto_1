@@ -33,7 +33,7 @@ def test_create():
         print('\n------ Create prueba1.txt on /carpeta1/ ------')
         proxy.execute('create', {
             'name': 'prueba2.txt',
-            'path': '/carpeta3/carpeta2/carpetita espacio',
+            'path': '/carpeta3/carpeta2/carpetita espacio/',
             'body': 'contenido del archivo'
         })
 

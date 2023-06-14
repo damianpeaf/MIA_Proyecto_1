@@ -7,3 +7,4 @@ from .delete import DeleteCommand
 from .modify import ModifyCommand
 from .rename import RenameCommand
 from .transfer import TransferCommand
+from .exec import ExecCommand

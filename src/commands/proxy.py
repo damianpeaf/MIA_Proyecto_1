@@ -1,7 +1,8 @@
+from analyzer.parser import parser  # ! <-- Posible circular import
 from .config import CommandConfig
 from .factory import CommandFactory
 from .logger import Logger, OperationType
-from .implementation import ConfigureCommand
+from .implementation import ConfigureCommand, ExecCommand
 
 
 class CommandProxy:
@@ -19,7 +20,10 @@ class CommandProxy:
             Logger.error(f"Comando '{command_name}' no encontrado", OperationType.INPUT)
             return False
 
-        if (CommandProxy.command_config is None) and (not isinstance(command, ConfigureCommand)):
+        is_config_command = isinstance(command, ConfigureCommand)
+        is_exec_command = isinstance(command, ExecCommand)
+
+        if (CommandProxy.command_config is None) and (not (is_config_command or is_exec_command)):
             Logger.error(f"Comando '{command_name}' requiere configuración inicial para ejecutarse", OperationType.INPUT)
             return False
 
@@ -29,7 +33,29 @@ class CommandProxy:
 
         # Execute command
         command.info()  # register command execution
-        return command.execute()
+        result = command.execute()
+
+        if is_exec_command:
+            self._exec_runtime(result)
+
+        return result
+
+    def _exec_runtime(self, commands: list[str]):
+
+        line = 0
+        for command in commands:
+
+            line += 1
+
+            if command == '':
+                continue
+
+            try:
+                # TODO: encrypt read
+                param_name, params = parser.parse(command)  # ? error handling ?
+                self.execute(param_name, params)
+            except:
+                Logger.error(f"Error al parsear comando '{command}', linea: {line}", OperationType.INPUT)
 
     def reset(self):
         CommandProxy.command_config = None
