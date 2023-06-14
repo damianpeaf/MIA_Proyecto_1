@@ -81,13 +81,8 @@ class LocalFileService:
     def delete_resource(self, relative_path: str, file_name: str = None):
 
         if file_name:
-            print('delete file')
-            print(relative_path)
-            print(file_name)
             return self._delete_file(relative_path, file_name)
         else:
-            print('delete dir')
-            print(relative_path)
             return self._delete_directory(relative_path)
 
     def modify_resource(self, relative_path: str, body: str) -> dict:
@@ -175,6 +170,13 @@ class LocalFileService:
             return {
                 'ok': False,
                 'msg': f"El directorio '{relative_path}' no existe"
+            }
+
+        # is a directory
+        if not path.isdir(dir_path):
+            return {
+                'ok': False,
+                'msg': f"La ruta '{relative_path}' no es un directorio"
             }
 
         # Delete directory even if it has files

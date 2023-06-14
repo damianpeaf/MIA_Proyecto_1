@@ -1,31 +1,62 @@
-[13/06/2023 20:44:23] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia'  - Entorno: None
-[13/06/2023 20:44:23] - INPUT - INFO - Comando configure - type='local', encrypt_log='false', encrypt_read='false', llave='None'  - Entorno: None
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba1.txt', path='/carpeta1/', body='Este es el contenido del archivo1'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba2.txt', path='/carpeta1/', body='Este es el contenido del archivo2'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba1.txt  -path->/"Carpeta Ejemplo"/ -body->"Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo"', linea: 4 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba2.txt  -path->/"Carpeta Ejemplo"/ -body->"El sistema binario, también llamado sistema diádico​ en ciencias de la computación, es un sistema de numeración en el que los números son representados utilizando únicamente dos cifras: 0 (cero) y 1 (uno)."', linea: 5 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'create -name->prueba3.txt  -path->/"Carpeta Ejemplo"/ -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 6 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre1.txt'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba1.txt' renombrado con exito - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre2.txt'  - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'rename -path->/carpeta1/prueba1.txt -name->nuevo_nombre2.txt', linea: 8 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt', name='nuevo_nombre2.txt'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba2.txt' renombrado con exito - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'copy -from->/carpeta1/nuevo_nombre1.txt -to->/"Carpeta Ejemplo"/ ', linea: 10 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/nuevo_nombre2.txt -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 11 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando delete - path='/carpeta1/prueba2.txt', name='None'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - ERROR - Comando: 'delete' - El directorio 'carpeta1/prueba2.txt' no existe - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'delete -path->/"Carpeta Ejemplo"/prueba3.txt', linea: 13 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'modify -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 14 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'backup', linea: 15 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'add -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt  -body->/"De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red."/', linea: 16 - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba4.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo4'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba4.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba5.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo5'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba5.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
-[13/06/2023 20:44:23] - INPUT - INFO - Comando create - name='prueba6.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo6'  - Entorno: local
-[13/06/2023 20:44:23] - OUTPUT - EXITO - Comando create - Archivo 'prueba6.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
-[13/06/2023 20:44:23] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/ -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 20 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia'  - Entorno: None
+[13/06/2023 21:04:30] - INPUT - INFO - Comando configure - type='local', encrypt_log='false', encrypt_read='false', llave='None'  - Entorno: None
+[13/06/2023 21:04:30] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando create - name='prueba1.txt', path='/carpeta1/', body='Este es el contenido del archivo1'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba1.txt' ya existe en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando create - name='prueba2.txt', path='/carpeta1/', body='Este es el contenido del archivo2'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba2.txt' ya existe en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'create -name->prueba1.txt  -path->/"Carpeta Ejemplo"/ -body->"Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo"', linea: 4 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'create -name->prueba2.txt  -path->/"Carpeta Ejemplo"/ -body->"hola"', linea: 5 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'create -name->prueba3.txt  -path->/"Carpeta Ejemplo"/ -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 6 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre1.txt'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre1.txt' ya existe en la ruta 'carpeta1/prueba1.txt' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre2.txt' ya existe en la ruta 'carpeta1/prueba1.txt' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre2.txt' ya existe en la ruta 'carpeta1/prueba2.txt' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'copy -from->/carpeta1/nuevo_nombre1.txt -to->/"Carpeta Ejemplo"/ ', linea: 10 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/nuevo_nombre2.txt -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 11 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando delete - path='/carpeta1/prueba2.txt', name='None'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'delete' - La ruta 'carpeta1/prueba2.txt' no es un directorio - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'delete -path->/"Carpeta Ejemplo"/prueba3.txt', linea: 13 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'modify -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 14 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'backup', linea: 15 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'add -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt  -body->"De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red."', linea: 16 - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando create - name='prueba4.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo4'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba4.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando create - name='prueba5.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo5'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba5.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - INFO - Comando create - name='prueba6.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo6'  - Entorno: local
+[13/06/2023 21:04:30] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba6.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:04:30] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/ -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 20 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia  - Entorno: None
+[13/06/2023 21:06:56] - INPUT - INFO - Comando configure - type='local, encrypt_log='false, encrypt_read='false, llave='None  - Entorno: None
+[13/06/2023 21:06:56] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando create - name='prueba1.txt, path='/carpeta1/, body='Este es el contenido del archivo1  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba1.txt' ya existe en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando create - name='prueba2.txt, path='/carpeta1/, body='Este es el contenido del archivo2  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba2.txt' ya existe en la ruta 'carpeta1/' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'create -name->prueba1.txt  -path->/"Carpeta Ejemplo"/ -body->"Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo"', linea: 4 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'create -name->prueba2.txt  -path->/"Carpeta Ejemplo"/ -body->"hola"', linea: 5 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'create -name->prueba3.txt  -path->/"Carpeta Ejemplo"/ -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 6 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt, name='nuevo_nombre1.txt  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre1.txt' ya existe en la ruta 'carpeta1/prueba1.txt' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt, name='nuevo_nombre2.txt  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre2.txt' ya existe en la ruta 'carpeta1/prueba1.txt' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt, name='nuevo_nombre2.txt  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'nuevo_nombre2.txt' ya existe en la ruta 'carpeta1/prueba2.txt' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'copy -from->/carpeta1/nuevo_nombre1.txt -to->/"Carpeta Ejemplo"/ ', linea: 10 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/nuevo_nombre2.txt -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 11 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando delete - path='/carpeta1/prueba2.txt, name='None  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'delete' - La ruta 'carpeta1/prueba2.txt' no es un directorio - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'delete -path->/"Carpeta Ejemplo"/prueba3.txt', linea: 13 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'modify -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt -body->"Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos"', linea: 14 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando backup -   - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'add -path->/"Carpeta Ejemplo"/nuevo_nombre1.txt  -body->"De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red."', linea: 16 - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando create - name='prueba4.txt, path='/carpeta1/ejemplo/, body='Este es el contenido del archivo4  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba4.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando create - name='prueba5.txt, path='/carpeta1/ejemplo/, body='Este es el contenido del archivo5  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba5.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - INFO - Comando create - name='prueba6.txt, path='/carpeta1/ejemplo/, body='Este es el contenido del archivo6  - Entorno: local
+[13/06/2023 21:06:56] - OUTPUT - ERROR - Comando: 'create' - El archivo 'prueba6.txt' ya existe en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[13/06/2023 21:06:56] - INPUT - ERROR - Error al parsear comando 'transfer -from->/carpeta1/ -to->/"Carpeta Ejemplo"/ -mode->"local"', linea: 20 - Entorno: local

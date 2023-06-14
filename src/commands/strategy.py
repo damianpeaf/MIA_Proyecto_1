@@ -54,7 +54,7 @@ class CommandStrategy(ABC):
         CommandProxy.command_config = config
 
     def info(self):
-        formated_args = ', '.join([f"{key}='{value}'" for key, value in self.args.items()])
+        formated_args = ', '.join([f"{key}='{value}" for key, value in self.args.items()])
         Logger.info(f"Comando {self.command_name} - {formated_args} ", OperationType.INPUT)
 
     @abstractmethod

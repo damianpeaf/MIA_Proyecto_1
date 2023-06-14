@@ -1,11 +1,7 @@
 from ..strategy import CommandStrategy
 from ..config import CommandConfig, CommandEnvironment
 
-backup_validations = [
-    {
-
-    }
-]
+backup_validations = []
 
 
 class BackupCommand(CommandStrategy):

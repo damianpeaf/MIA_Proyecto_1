@@ -54,7 +54,16 @@ class CommandProxy:
                 # TODO: encrypt read
                 param_name, params = parser.parse(command)  # ? error handling ?
                 self.execute(param_name, params)
-            except:
+            except Exception as e:
+
+                print(f"""
+                
+                error: {e}
+                
+                comando: {command}
+
+                """)
+
                 Logger.error(f"Error al parsear comando '{command}', linea: {line}", OperationType.INPUT)
 
     def reset(self):
