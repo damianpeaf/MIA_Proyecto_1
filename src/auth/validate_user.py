@@ -20,6 +20,9 @@ True if the username and password are valid, False otherwise.
 
 def validate_user(username: str = '', password: str = '') -> bool:
 
+    if not path.exists(path.join(LOCAL_BASE_PATH, USERS_FILE)):
+        return False
+
     with open(path.join(LOCAL_BASE_PATH, USERS_FILE), 'r') as users_file:
         lines = users_file.readlines()
 
