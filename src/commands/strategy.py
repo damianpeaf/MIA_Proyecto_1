@@ -42,7 +42,7 @@ class CommandStrategy(ABC):
     def success(self, message: str = ''):
         Logger.success(f'Comando {self.command_name} - {message}', OperationType.OUTPUT)
 
-    def warning(self, message: str = ''):
+    def warning(self, message: str = '', operation_type: OperationType = OperationType.OUTPUT):
         Logger.warning(f"Comando '{self.command_name}' - {message}", OperationType.OUTPUT)
 
     def get_config(self) -> CommandConfig:
@@ -54,7 +54,7 @@ class CommandStrategy(ABC):
         CommandProxy.command_config = config
 
     def info(self):
-        formated_args = ', '.join([f"{key}='{value}" for key, value in self.args.items()])
+        formated_args = ', '.join([f"{key}='{value}'" for key, value in self.args.items()])
         Logger.info(f"Comando {self.command_name} - {formated_args} ", OperationType.INPUT)
 
     @abstractmethod
