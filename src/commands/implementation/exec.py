@@ -25,9 +25,10 @@ class ExecCommand(CommandStrategy):
         init_time = time()
         enviroment = CommandEnvironment.LOCAL
 
-        if self.get_config() is None:
-            self.warning(f"Comando 'exec' requiere configuración inicial para ejecutarse, utilizando entorno local por defecto", OperationType.INPUT)
+        if self.get_config() is not None:
             enviroment = self.get_config().environment
+        else:
+            self.warning(f"Comando 'exec' requiere configuración inicial para ejecutarse, utilizando entorno local por defecto", OperationType.INPUT)
 
         if enviroment == CommandEnvironment.CLOUD:
             resp = self._cloud_service.get_file_content(self.args.get('path'))
@@ -122,12 +123,15 @@ class ExecCommand(CommandStrategy):
                 print(e)
                 self.add_error(f"Error al parsear comando '{entry}', linea: {line_number}", OperationType.INPUT)
 
+        self._local_service.reset_proccesed_files()
+        self._cloud_service.reset_proccesed_files()
+
         for command in commands:
             proxy._exec_runtime(command)
 
         total_time = time() - init_time
         total_time_str = f"{total_time:.2f} segundos"
-        success_message = f"Archivos Procesados:  -CLOUD: 0 -LOCAL: 0 - Tiempo de ejecución: {total_time_str}"
+        success_message = f"Archivos Procesados:  -CLOUD: {self._cloud_service.get_proccesed_files()} -LOCAL: {self._local_service.get_proccesed_files()} - Tiempo de ejecución: {total_time_str}"
 
         self.success(success_message)
         proxy.notify_console(success_message)

@@ -8,13 +8,6 @@ def test_exec():
     proxy = CommandProxy()
     proxy.reset()
 
-    proxy.execute('configure', {
-        'type': 'local',
-        'encrypt_log': 'false',
-        'encrypt_read': 'true',
-        'llave': '1234567890123456',
-    })
-
     # ! no config
     proxy.execute('exec', {
         'path': '/prueba/prueba1.mia',

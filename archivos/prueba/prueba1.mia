@@ -1,4 +1,5 @@
-create -name->prueba1.txt  -path->/carpeta1/ -body->"Este es el contenido del archivo1"
+configure -type->local -encrypt_log->false -encrypt_read->false
+create -name->prueba1.txt  -path->/carpeta1/ -body->"Este es el contenido del archivo1" 
 create -name->prueba2.txt  -path->/carpeta1/ -body->"Este es el contenido del archivo2"
 create -name->prueba1.txt  -path->/"Carpeta Ejemplo"/ -body->"Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo"
 create -name->prueba2.txt  -path->/"Carpeta Ejemplo"/ -body->"contenido archivo2"
