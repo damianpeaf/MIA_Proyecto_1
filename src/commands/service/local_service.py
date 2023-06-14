@@ -122,6 +122,12 @@ class LocalFileService:
         base_name = path.dirname(dir_path)
         new_path = path.join(base_name, new_name)
 
+        if not path.exists(dir_path):
+            return {
+                'ok': False,
+                'msg': f"El archivo '{relative_path}' no existe"
+            }
+
         if path.exists(new_path):
             return {
                 'ok': False,
@@ -215,6 +221,9 @@ class LocalFileService:
         }
 
     def copy_resource(self, from_path: str, to_path: str, change_name: bool = False):
+
+        if from_path[0] == '/':
+            from_path = from_path[1:]
 
         if path.isfile(path.join(LOCAL_ROOT_PATH, from_path)):
             return self._copy_file(from_path, to_path, path.basename(from_path), change_name)
@@ -338,6 +347,12 @@ class LocalFileService:
         return path.join(directory_path, new_name)
 
     def transfer_resource(self, from_path: str, to_path: str):
+
+        if from_path[0] == '/':
+            from_path = from_path[1:]
+
+        if to_path[0] == '/':
+            to_path = to_path[1:]
 
         to_relative_path = to_path[1:] if to_path[0] == '/' else to_path
 

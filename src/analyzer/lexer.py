@@ -52,7 +52,7 @@ def t_valueState_end(t):
 
 
 def t_ANY_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Illegal character '%s'" % t.value[0] + " at line " + str(t.lineno) + " at position " + str(t.lexpos))
     t.lexer.skip(1)
 
 
