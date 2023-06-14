@@ -1,0 +1,86 @@
+[14/06/2023 15:26:55] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia'  - Entorno: None
+[14/06/2023 15:26:55] - OUTPUT - ADVERTENCIA - Comando 'exec' - Comando 'exec' requiere configuración inicial para ejecutarse, utilizando entorno local por defecto - Entorno: None
+[14/06/2023 15:26:55] - INPUT - INFO - Comando configure - type='local', encrypt_log='false', encrypt_read='false', llave='None'  - Entorno: None
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba1.txt', path='/carpeta1/', body='Este es el contenido del archivo1'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba2.txt', path='/carpeta1/', body='Este es el contenido del archivo2'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta 'carpeta1/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba1.txt', path='/Carpeta Ejemplo/', body='Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba2.txt', path='/Carpeta Ejemplo/', body='contenido archivo2'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba3.txt', path='/Carpeta Ejemplo/', body='Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando create - Archivo 'prueba3.txt' creado con exito en la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre1.txt'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba1.txt' renombrado con exito - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - ERROR - Comando: 'rename' - El archivo 'carpeta1/prueba1.txt' no existe - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt', name='nuevo_nombre2.txt'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando rename - Archivo 'carpeta1/prueba2.txt' renombrado con exito - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando copy - from='/carpeta1/nuevo_nombre1.txt', to='/Carpeta Ejemplo/'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando copy - Archivo 'nuevo_nombre1.txt' copiado con exito a la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando transfer - from='/carpeta1/nuevo_nombre2.txt', to='/Carpeta Ejemplo/', mode='local'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando transfer - 'carpeta1/nuevo_nombre2.txt' transferido con exito a la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando delete - path='/carpeta1/', name='prueba2.txt'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - ERROR - Comando: 'delete' - El archivo 'prueba2.txt' no existe en la ruta 'carpeta1/' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando delete - path='/Carpeta Ejemplo/', name='prueba3.txt'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando delete - Archivo 'Carpeta Ejemplo/' eliminado con exito - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando modify - path='/Carpeta Ejemplo/nuevo_nombre1.txt', body='Se trata de habilitar uno o varios discos duros en una red local, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando modify - Contenido modificado con exito en 'Carpeta Ejemplo/nuevo_nombre1.txt' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando backup -   - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando add - path='/Carpeta Ejemplo/nuevo_nombre1.txt', body='De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red.'  - Entorno: local
+[14/06/2023 15:26:55] - OUTPUT - EXITO - Comando add - Contenido agregado con exito a 'Carpeta Ejemplo/nuevo_nombre1.txt' - Entorno: local
+[14/06/2023 15:26:55] - INPUT - INFO - Comando create - name='prueba4.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo4'  - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - EXITO - Comando create - Archivo 'prueba4.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[14/06/2023 15:26:56] - INPUT - INFO - Comando create - name='prueba5.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo5'  - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - EXITO - Comando create - Archivo 'prueba5.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[14/06/2023 15:26:56] - INPUT - INFO - Comando create - name='prueba6.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo6'  - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - EXITO - Comando create - Archivo 'prueba6.txt' creado con exito en la ruta 'carpeta1/ejemplo/' - Entorno: local
+[14/06/2023 15:26:56] - INPUT - INFO - Comando transfer - from='/carpeta1/', to='/Carpeta Ejemplo/', mode='local'  - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - ADVERTENCIA - Comando 'transfer' - El archivo 'nuevo_nombre1.txt' ya existe en la carpeta destino. Se copiará como 'nuevo_nombre1 (1).txt' - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - EXITO - Comando transfer - 'carpeta1/' transferido con exito a la ruta 'Carpeta Ejemplo/' - Entorno: local
+[14/06/2023 15:26:56] - OUTPUT - EXITO - Comando exec - Archivos Procesados:  -CLOUD: 0 -LOCAL: 19 - Tiempo de ejecución: 0.08 segundos - Entorno: local
+[14/06/2023 15:27:11] - INPUT - INFO - Comando exec - path='/prueba/prueba1.mia'  - Entorno: None
+[14/06/2023 15:27:11] - OUTPUT - ADVERTENCIA - Comando 'exec' - Comando 'exec' requiere configuración inicial para ejecutarse, utilizando entorno local por defecto - Entorno: None
+[14/06/2023 15:27:11] - INPUT - INFO - Comando configure - type='cloud', encrypt_log='false', encrypt_read='false', llave='None'  - Entorno: None
+[14/06/2023 15:27:11] - OUTPUT - EXITO - Comando configure - Configuracion guardada con exito - Entorno: cloud
+[14/06/2023 15:27:11] - INPUT - INFO - Comando create - name='prueba1.txt', path='/carpeta1/', body='Este es el contenido del archivo1'  - Entorno: cloud
+[14/06/2023 15:27:13] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta especificada '/carpeta1/' - Entorno: cloud
+[14/06/2023 15:27:13] - INPUT - INFO - Comando create - name='prueba2.txt', path='/carpeta1/', body='Este es el contenido del archivo2'  - Entorno: cloud
+[14/06/2023 15:27:15] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta especificada '/carpeta1/' - Entorno: cloud
+[14/06/2023 15:27:15] - INPUT - INFO - Comando create - name='prueba1.txt', path='/Carpeta Ejemplo/', body='Un sistema de archivos es una estructura de directorios completa, que incluye un directorio raíz y cualquier subdirectorio y archivos por debajo suyo'  - Entorno: cloud
+[14/06/2023 15:27:17] - OUTPUT - EXITO - Comando create - Archivo 'prueba1.txt' creado con exito en la ruta especificada '/Carpeta Ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:17] - INPUT - INFO - Comando create - name='prueba2.txt', path='/Carpeta Ejemplo/', body='contenido archivo2'  - Entorno: cloud
+[14/06/2023 15:27:18] - OUTPUT - EXITO - Comando create - Archivo 'prueba2.txt' creado con exito en la ruta especificada '/Carpeta Ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:18] - INPUT - INFO - Comando create - name='prueba3.txt', path='/Carpeta Ejemplo/', body='Se trata de habilitar uno o varios discos duros en una red cloud, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos'  - Entorno: cloud
+[14/06/2023 15:27:19] - OUTPUT - EXITO - Comando create - Archivo 'prueba3.txt' creado con exito en la ruta especificada '/Carpeta Ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:19] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre1.txt'  - Entorno: cloud
+[14/06/2023 15:27:20] - OUTPUT - EXITO - Comando rename - Archivo renombrado con exito - Entorno: cloud
+[14/06/2023 15:27:20] - INPUT - INFO - Comando rename - path='/carpeta1/prueba1.txt', name='nuevo_nombre2.txt'  - Entorno: cloud
+[14/06/2023 15:27:21] - OUTPUT - ERROR - Comando: 'rename' - No se encontró el archivo especificado - Entorno: cloud
+[14/06/2023 15:27:21] - INPUT - INFO - Comando rename - path='/carpeta1/prueba2.txt', name='nuevo_nombre2.txt'  - Entorno: cloud
+[14/06/2023 15:27:22] - OUTPUT - EXITO - Comando rename - Archivo renombrado con exito - Entorno: cloud
+[14/06/2023 15:27:22] - INPUT - INFO - Comando copy - from='/carpeta1/nuevo_nombre1.txt', to='/Carpeta Ejemplo/'  - Entorno: cloud
+[14/06/2023 15:27:24] - OUTPUT - EXITO - Comando copy - Archivo nuevo_nombre1.txt copiado con exito - Entorno: cloud
+[14/06/2023 15:27:24] - INPUT - INFO - Comando transfer - from='/carpeta1/nuevo_nombre2.txt', to='/Carpeta Ejemplo/', mode='cloud'  - Entorno: cloud
+[14/06/2023 15:27:28] - OUTPUT - EXITO - Comando transfer - Recurso transferido con exito - Entorno: cloud
+[14/06/2023 15:27:28] - INPUT - INFO - Comando delete - path='/carpeta1/', name='prueba2.txt'  - Entorno: cloud
+[14/06/2023 15:27:28] - OUTPUT - ERROR - Comando: 'delete' - No se encontró el archivo especificado - Entorno: cloud
+[14/06/2023 15:27:28] - INPUT - INFO - Comando delete - path='/Carpeta Ejemplo/', name='prueba3.txt'  - Entorno: cloud
+[14/06/2023 15:27:29] - OUTPUT - EXITO - Comando delete - archivo eliminado con exito - Entorno: cloud
+[14/06/2023 15:27:29] - INPUT - INFO - Comando modify - path='/Carpeta Ejemplo/nuevo_nombre1.txt', body='Se trata de habilitar uno o varios discos duros en una red cloud, de forma que los datos que allí se almacenen permanezcan accesibles a todos los dispositivos que quieran utilizarlos'  - Entorno: cloud
+[14/06/2023 15:27:30] - OUTPUT - EXITO - Comando modify - Se modificó el contenido del archivo nuevo_nombre1.txt - Entorno: cloud
+[14/06/2023 15:27:30] - INPUT - INFO - Comando backup -   - Entorno: cloud
+[14/06/2023 15:27:30] - INPUT - INFO - Comando add - path='/Carpeta Ejemplo/nuevo_nombre1.txt', body='De esa forma, el usuario no solo tiene acceso al propio almacenamiento del dispositivo que está usando, sino que también dispone de un almacenamiento común que comparte con otros dispositivos conectados a esa misma red.'  - Entorno: cloud
+[14/06/2023 15:27:32] - OUTPUT - EXITO - Comando add - Se agregó el contenido al archivo nuevo_nombre1.txt - Entorno: cloud
+[14/06/2023 15:27:32] - INPUT - INFO - Comando create - name='prueba4.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo4'  - Entorno: cloud
+[14/06/2023 15:27:34] - OUTPUT - EXITO - Comando create - Archivo 'prueba4.txt' creado con exito en la ruta especificada '/carpeta1/ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:34] - INPUT - INFO - Comando create - name='prueba5.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo5'  - Entorno: cloud
+[14/06/2023 15:27:36] - OUTPUT - EXITO - Comando create - Archivo 'prueba5.txt' creado con exito en la ruta especificada '/carpeta1/ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:36] - INPUT - INFO - Comando create - name='prueba6.txt', path='/carpeta1/ejemplo/', body='Este es el contenido del archivo6'  - Entorno: cloud
+[14/06/2023 15:27:37] - OUTPUT - EXITO - Comando create - Archivo 'prueba6.txt' creado con exito en la ruta especificada '/carpeta1/ejemplo/' - Entorno: cloud
+[14/06/2023 15:27:37] - INPUT - INFO - Comando transfer - from='/carpeta1/', to='/Carpeta Ejemplo/', mode='cloud'  - Entorno: cloud
+[14/06/2023 15:27:47] - OUTPUT - ADVERTENCIA - Comando 'transfer' - El archivo 'nuevo_nombre1.txt' ya existe en la ruta de destino, se creó con el nombre 'nuevo_nombre1(1).txt' - Entorno: cloud
+[14/06/2023 15:27:47] - OUTPUT - EXITO - Comando transfer - Recurso transferido con exito - Entorno: cloud
+[14/06/2023 15:27:47] - OUTPUT - EXITO - Comando exec - Archivos Procesados:  -CLOUD: 19 -LOCAL: 0 - Tiempo de ejecución: 36.14 segundos - Entorno: cloud

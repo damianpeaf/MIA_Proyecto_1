@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import os.path
+from os import path
 import tempfile
 import io
 
@@ -11,7 +11,7 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBa
 from io import BytesIO
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
-TOKEN_PATH = os.path.join(os.path.dirname(__file__), 'token.json')
+TOKEN_PATH = path.abspath(path.join(path.dirname(__file__), 'token.json'))
 
 # ? Create an adapter for local/cloud services
 
@@ -33,10 +33,9 @@ class CloudFileService:
 
     def __init__(self) -> None:
         self._drive_service = None
-
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
         try:
-            self._drive_service = build('drive', 'v3', credentials=creds)
+            self._drive_service = build('drive', 'v3', credentials=creds, static_discovery=False)
         except HttpError as error:
             print(f'An error occurred with drive auth: {error}')
 
