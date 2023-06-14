@@ -50,6 +50,13 @@ class ConfigureCommand(CommandStrategy):
             )
             return False
 
+        if (encrypt_log or encrypt_read) and (encryption_key is not None) and (len(encryption_key) != 16):
+            self.add_error(
+                "La llave de encriptacion debe tener 16 caracteres",
+                OperationType.INPUT
+            )
+            return False
+
         self.set_config(CommandConfig(
             enviroment_type,
             encrypt_log,

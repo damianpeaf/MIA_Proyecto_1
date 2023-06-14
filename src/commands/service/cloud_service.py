@@ -437,9 +437,9 @@ class CloudFileService:
                         new_name = self._get_new_name(file.get('name'), to_id)
                         created_folder = self._create_folder(new_name, to_id)
                         self._copy_directory_content(file, created_folder, change_name)
-                        warnings.append(f'El directorio {file.get("name")} ya existe en la ruta de destino, se creó con el nombre {new_name}')
+                        warnings.append(f"El directorio '{file.get('name')}' ya existe en la ruta de destino, se creó con el nombre '{new_name}'")
                     else:
-                        warnings.append(f'El directorio {file.get("name")} ya existe en la ruta de destino')
+                        warnings.append(f"El directorio '{file.get('name')}' ya existe en la ruta de destino")
                         continue
 
             # file
@@ -458,9 +458,9 @@ class CloudFileService:
                         # change name
                         new_name = self._get_new_name(file.get('name'), to_id)
                         self._copy_file(file, to_id, change_name)
-                        warnings.append(f'El archivo {file.get("name")} ya existe en la ruta de destino, se creó con el nombre {new_name}')
+                        warnings.append(f"El archivo '{file.get('name')}' ya existe en la ruta de destino, se creó con el nombre '{new_name}'")
                     else:
-                        warnings.append(f'El archivo {file.get("name")} ya existe en la ruta de destino')
+                        warnings.append(f"El archivo '{file.get('name')}' ya existe en la ruta de destino")
                         continue
 
         return {

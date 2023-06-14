@@ -37,13 +37,13 @@ class CommandStrategy(ABC):
         return self._validator.validate(self.args)
 
     def add_error(self, error: str, operation_type: OperationType = OperationType.OUTPUT):
-        Logger.error(f"En el comando: '{self.command_name}': " + error, operation_type)
+        Logger.error(f"Comando: '{self.command_name}' - {error}", operation_type)
 
     def success(self, message: str = ''):
-        Logger.success(f'Comando {self.command_name} ejecutado con exito. {message}', OperationType.OUTPUT)
+        Logger.success(f'Comando {self.command_name} - {message}', OperationType.OUTPUT)
 
     def warning(self, message: str = ''):
-        Logger.warning(f"Advertencia en el comando '{self.command_name}': {message}'", OperationType.OUTPUT)
+        Logger.warning(f"Comando '{self.command_name}' - {message}", OperationType.OUTPUT)
 
     def get_config(self) -> CommandConfig:
         from .proxy import CommandProxy
@@ -52,6 +52,10 @@ class CommandStrategy(ABC):
     def set_config(self, config: CommandConfig):
         from .proxy import CommandProxy
         CommandProxy.command_config = config
+
+    def info(self):
+        formated_args = ', '.join([f"{key}='{value}'" for key, value in self.args.items()])
+        Logger.info(f"Comando {self.command_name} - {formated_args} ", OperationType.INPUT)
 
     @abstractmethod
     def execute(self) -> bool:

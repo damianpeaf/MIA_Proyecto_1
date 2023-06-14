@@ -16,11 +16,11 @@ class CommandProxy:
 
         # Command related validations
         if command is None:
-            Logger.error(f"Commando '{command_name}' no encontrado", OperationType.INPUT)
+            Logger.error(f"Comando '{command_name}' no encontrado", OperationType.INPUT)
             return False
 
         if (CommandProxy.command_config is None) and (not isinstance(command, ConfigureCommand)):
-            Logger.error(f"El comando '{command_name}' requiere configuración inicial para ejecutarse", OperationType.INPUT)
+            Logger.error(f"Comando '{command_name}' requiere configuración inicial para ejecutarse", OperationType.INPUT)
             return False
 
         # Parameters related validations
@@ -28,6 +28,7 @@ class CommandProxy:
             return False
 
         # Execute command
+        command.info()  # register command execution
         return command.execute()
 
     def reset(self):
