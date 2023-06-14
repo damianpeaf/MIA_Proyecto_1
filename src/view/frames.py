@@ -1,6 +1,11 @@
 import PySimpleGUI as sg
+from commands import CommandProxy, Logger
 from commands.config import Store
 from auth import validate_user
+
+Logger.clear_logs()
+proxy = CommandProxy()
+proxy.reset()
 
 
 def login_frame():
@@ -34,11 +39,13 @@ def login_frame():
     window.close()
 
 
-def create_input_window(title, inputs, execute_callback):
-    layout = [[sg.Text(label), sg.InputText(key=key)] for label, key in inputs]
+def create_input_window(title, inputs: list, window_size=(550, 200)):
+    layout = [
+        input for input in inputs
+    ]
     layout.append([sg.Button('Ejecutar')])
 
-    window = sg.Window(title, layout, size=(400, 200),
+    window = sg.Window(title, layout, size=window_size,
                        element_justification='l', font=('Helvetica', 14))
 
     while True:
@@ -46,8 +53,8 @@ def create_input_window(title, inputs, execute_callback):
         if event == sg.WINDOW_CLOSED:
             break
         if event == 'Ejecutar':
-            execute_callback(values)
-            break
+            window.close()
+            return values
 
     window.close()
 
@@ -85,34 +92,144 @@ def dashboard_frame():
             Store.IS_LOGGED = None
             break
         if event == 'Add':
-            create_input_window(
-                'Add', [('Path', '-PATH-'), ('Body', '-BODY-')])
+            values = create_input_window(
+                'Add', [
+                    [sg.Text('Path'), sg.Input(key='-PATH-')],
+                    [sg.Text('Body')],
+                    [sg.Multiline(key='-BODY-', size=(60, 5))],
+                ])
+            if values:
+                proxy.execute('add', {
+                    'path': values['-PATH-'],
+                    'body': values['-BODY-']
+                })
+
         if event == 'Backup':
             pass
         if event == 'Create':
-            create_input_window(
-                'Create', [('Name', '-NAME-'), ('Type', '-TYPE-'), ('Path', '-PATH-')])
+            value = create_input_window(
+                'Create', [
+                    [sg.Text('Name'), sg.Input(key='-NAME-')],
+                    [sg.Text('Body')],
+                    [sg.Multiline(key='-BODY-', size=(60, 5))],
+                    [sg.Text('Path'), sg.Input(
+                        key='-PATH-')],
+                ],
+                window_size=(550, 300))
+            if value:
+                proxy.execute('create', {
+                    'name': value['-NAME-'],
+                    'body': value['-BODY-'],
+                    'path': value['-PATH-'] if value['-PATH-'] else '/'
+                })
+
         if event == 'Copy':
-            create_input_window('Copy', [('From', '-FROM-'), ('To', '-TO-')])
+            values = create_input_window(
+                'Copy', [
+                    [sg.Text('From')],
+                    [sg.Input(sg.user_settings_get_entry(
+                        '-filename-', ''), key='-FROM-'), sg.FileBrowse()],
+                    [sg.Text('To')],
+                    [sg.Input(sg.user_settings_get_entry(
+                        '-filename-', ''), key='-TO-'), sg.FolderBrowse()],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('copy', {
+                    'from': values['-FROM-'],
+                    'to': values['-TO-']
+                })
+
         if event == 'Configure':
-            create_input_window('Configure', [('Type', '-TYPE-'), ('Log encryption', '-LOG_ENCRYPTION-'),
-                                              ('Read encryption',
-                                               '-READ_ENCRYPTION-'),
-                                              ('Encryption key', '-ENCRYPTION_KEY-')])
+            values = create_input_window(
+                'Configure', [
+                    [sg.Text('Type'), sg.Input(key='-TYPE-')],
+                    [sg.Text('Log encryption'), sg.Input(
+                        key='-LOG_ENCRYPTION-')],
+                    [sg.Text('Read encryption'), sg.Input(
+                        key='-READ_ENCRYPTION-')],
+                    [sg.Text('Encryption key'), sg.Input(
+                        key='-ENCRYPTION_KEY-')],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('configure', {
+                    'type': values['-TYPE-'],
+                    'encrypt_log': values['-LOG_ENCRYPTION-'],
+                    'encrypt_read': values['-READ_ENCRYPTION-'],
+                    'llave': values['-ENCRYPTION_KEY-']
+                })
+
         if event == 'Delete':
-            create_input_window(
-                'Delete', [('Path', '-PATH-'), ('Name', '-NAME-')])
+            values = create_input_window(
+                'Delete', [
+                    [sg.Text('Path'), sg.Input(key='-PATH-')],
+                    [sg.Text('Name'), sg.Input(key='-NAME-')],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('delete', {
+                    'path': values['-PATH-'],
+                    'name': values['-NAME-']
+                })
+
         if event == 'Exec':
-            create_input_window('Exec', [('Path', '-PATH-')])
+
+            values = create_input_window(
+                'Exec', [
+                    [sg.Text('Path'), sg.Input(key='-PATH-')]
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('exec', {
+                    'path': values['-PATH-']
+                })
+
         if event == 'Modify':
-            create_input_window(
-                'Modify', [('Path', '-PATH-'), ('Body', '-BODY-')])
+            values = create_input_window(
+                'Modify', [
+                    [sg.Text('Path'), sg.Input(key='-PATH-')],
+                    [sg.Text('Body')],
+                    [sg.Multiline(key='-BODY-', size=(60, 5))],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('modify', {
+                    'path': values['-PATH-'],
+                    'body': values['-BODY-']
+                })
         if event == 'Rename':
-            create_input_window(
-                'Rename', [('Path', '-PATH-'), ('Name', '-NAME-')])
+            values = create_input_window(
+                'Rename', [
+                    [sg.Text('Path'), sg.Input(key='-PATH-')],
+                    [sg.Text('Name'), sg.Input(key='-NAME-')],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('rename', {
+                    'path': values['-PATH-'],
+                    'name': values['-NAME-']
+                })
         if event == 'Transfer':
             create_input_window(
                 'Transfer', [('From', '-FROM-'), ('To', '-TO-'), ('Mode', '-MODE-')])
+            values = create_input_window(
+                'Transfer', [
+                    [sg.Text('From')],
+                    [sg.Input(key='-FROM-')],
+                    [sg.Text('To')],
+                    [sg.Input(key='-TO-')],
+                    [sg.Text('Mode')],
+                    [sg.Input(key='-MODE-')],
+                ],
+                window_size=(550, 200))
+            if values:
+                proxy.execute('transfer', {
+                    'from': values['-FROM-'],
+                    'to': values['-TO-'],
+                    'mode': values['-MODE-']
+                })
+
         if event == 'Cerrar sesión':
             Store.IS_LOGGED = False
             break
