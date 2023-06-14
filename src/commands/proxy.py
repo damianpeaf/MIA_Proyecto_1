@@ -1,4 +1,4 @@
-from analyzer.parser import parser  # ! <-- Posible circular import
+from .observable import Observable
 from .config import CommandConfig
 from .factory import CommandFactory
 from .logger import Logger, OperationType
@@ -8,6 +8,7 @@ from .implementation import ConfigureCommand, ExecCommand
 class CommandProxy:
 
     command_config: CommandConfig = None
+    console_event = Observable()
 
     def __init__(self):
         self._factory = CommandFactory()
@@ -33,38 +34,29 @@ class CommandProxy:
 
         # Execute command
         command.info()  # register command execution
-        result = command.execute()
 
-        if is_exec_command:
-            self._exec_runtime(result)
+        result = False
+
+        if not is_exec_command:
+            result = command.execute()
+        else:
+            result = command.execute(self)
 
         return result
 
-    def _exec_runtime(self, commands: list[str]):
+    def _exec_runtime(self, command: dict[str, any]):
+        command_name, params = command.get('parsed')
+        command_line = command.get('line')
 
-        line = 0
-        for command in commands:
+        # notify command execution, for write in console
+        self.notify_console(command_line)
 
-            line += 1
+        # execute command
+        return self.execute(command_name, params)
 
-            if command == '':
-                continue
-
-            try:
-                # TODO: encrypt read
-                param_name, params = parser.parse(command)  # ? error handling ?
-                self.execute(param_name, params)
-            except Exception as e:
-
-                print(f"""
-                
-                error: {e}
-                
-                comando: {command}
-
-                """)
-
-                Logger.error(f"Error al parsear comando '{command}', linea: {line}", OperationType.INPUT)
+    def notify_console(self, command_line: str):
+        CommandProxy.console_event.notify_observers(command_line)
 
     def reset(self):
         CommandProxy.command_config = None
+        CommandProxy.console_event = Observable()
