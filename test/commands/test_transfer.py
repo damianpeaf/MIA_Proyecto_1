@@ -74,8 +74,9 @@ def test_transfer_cloud():
         # initial config
         proxy.execute('configure', {
             'type': 'cloud',
-            'encrypt_log': 'false',
+            'encrypt_log': 'falsE',
             'encrypt_read': 'false',
+            'llave': '1234678901234567'
         })
 
         # * CLOUD ENVIRONMENT

@@ -1,6 +1,6 @@
 from os import path
 
-from utils import aes_encryption
+from utils import aes_encryption, aes_decryption
 from commands import LOCAL_BASE_PATH
 
 USERS_FILE = 'miausuarios.txt'
@@ -34,20 +34,24 @@ def validate_user(username: str = '', password: str = '') -> bool:
 
             # If the username was found, check the password
             if username_found:
-                # TODO: Check if the aes encryption its encrypting the password correctly
-                print('\npassword check')
                 if line.strip().upper() == aes_encryption(AES_KEY, password).upper():
-                    return True
+                    return {
+                        'username': username,
+                        'ok': True
+                    }
 
                 # If the password was not found, return False
-                return False
+                return {
+                    'username': username,
+                    'ok': False
+                }
             elif check:
-                print('\nusername check')
-                print(line.strip())
-                print(username.strip())
                 if line.strip() == username.strip():
                     username_found = True
 
             check = not check
 
-    return False
+    return {
+        'username': username,
+        'ok': False
+    }
