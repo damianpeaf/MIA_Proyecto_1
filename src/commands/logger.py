@@ -46,10 +46,13 @@ class Logger:
             'message': message,
             'operation_type': 'input' if operation_type == OperationType.INPUT else 'output',
             'date': datetime.now(),
-            'enviroment': enviroment
+            'enviroment': 'No configurado' if enviroment is None else enviroment
         })
 
         Logger._write_binnacle()
+
+        if operation_type == OperationType.OUTPUT:
+            CommandProxy.console_event.notify_observers(message)
 
     @staticmethod
     def print_logs():

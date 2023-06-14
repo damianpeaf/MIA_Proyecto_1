@@ -1,3 +1,5 @@
+from commands import Observer
+
 import PySimpleGUI as sg
 from commands import CommandProxy, Logger
 from commands.config import Store
@@ -59,9 +61,21 @@ def create_input_window(title, inputs: list, window_size=(550, 200)):
     window.close()
 
 
+class ConsoleObserver(Observer):
+
+    def __init__(self, window):
+        self.window = window
+
+    def update(self, data):
+        # append new command to console
+        self.window['console_area'].update(
+            self.window['console_area'].get() + '\n' + data
+        )
+
+
 def dashboard_frame():
     size_button = (10, 1)
-    size_window = (900, 400)
+    size_window = (1280, 400)
 
     col = [
         [sg.T('Comandos', font=('Helvetica', 14))],
@@ -80,11 +94,16 @@ def dashboard_frame():
 
     layout = [
         [sg.Text('Consola', size=(40, 1), justification='left')],
-        [sg.Multiline(size=(80, 50)), sg.Column(col)],
+        [sg.Multiline(size=(80, 50), key="console_area"), sg.Column(col)],
     ]
 
     window = sg.Window('Dashboard', layout, size=size_window,
                        element_justification='l', font=('Helvetica', 14))
+
+    proxy.reset_console_event()
+
+    console_observer = ConsoleObserver(window)
+    proxy.console_event.register_observer(console_observer)
 
     while True:
         event, _ = window.read()

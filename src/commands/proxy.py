@@ -57,6 +57,8 @@ class CommandProxy:
     def notify_console(self, command_line: str):
         CommandProxy.console_event.notify_observers(command_line)
 
+    def reset_console_event(self):
+        CommandProxy.console_event = Observable()
+
     def reset(self):
         CommandProxy.command_config = None
-        CommandProxy.console_event = Observable()
