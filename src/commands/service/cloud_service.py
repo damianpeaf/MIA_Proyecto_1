@@ -20,6 +20,17 @@ ROOT_FOLDER_NAME = 'archivos'
 
 class CloudFileService:
 
+    proccesed_files = 0
+
+    def reset_proccesed_files(self):
+        CloudFileService.proccesed_files = 0
+
+    def increment_proccesed_files(self, count: int = 1):
+        CloudFileService.proccesed_files += count
+
+    def get_proccesed_files(self):
+        return CloudFileService.proccesed_files
+
     def __init__(self) -> None:
         self._drive_service = None
 
@@ -92,6 +103,8 @@ class CloudFileService:
         self._drive_service.files().update(
             fileId=file_id, media_body=media_body).execute()
 
+        self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f'Se agregó el contenido al archivo {file_name}' if is_add else f'Se modificó el contenido del archivo {file_name}'
@@ -140,6 +153,8 @@ class CloudFileService:
 
             file = self._drive_service.files().create(
                 body=file_metadata, media_body=media, fields='id').execute()
+
+            self.increment_proccesed_files()
 
             return {
                 'msg': f"Archivo '{name}' creado con exito en la ruta especificada '{path}'",
@@ -199,6 +214,8 @@ class CloudFileService:
             file = self._drive_service.files().update(
                 fileId=file_to_rename_id, body=file_metadata, fields='id').execute()
 
+            self.increment_proccesed_files()
+
             return {
                 'msg': 'Archivo renombrado con exito',
                 'ok': True,
@@ -226,6 +243,8 @@ class CloudFileService:
         try:
 
             self._drive_service.files().delete(fileId=resource_id).execute()
+
+            self.increment_proccesed_files()
 
             return {
                 'msg': f'{resource_type} eliminado con exito',
@@ -485,6 +504,8 @@ class CloudFileService:
             file = self._drive_service.files().copy(
                 fileId=from_resource.get('id'), body=file_metadata).execute()
 
+            self.increment_proccesed_files()
+
             return {
                 'msg': f'Archivo {from_resource.get("name")} copiado con exito',
                 'ok': True
@@ -502,6 +523,8 @@ class CloudFileService:
 
                 file = self._drive_service.files().copy(
                     fileId=from_resource.get('id'), body=file_metadata).execute()
+
+                self.increment_proccesed_files()
 
                 return {
                     'msg': f'Archivo {from_resource.get("name")} copiado con exito con el nombre {new_name}',

@@ -13,6 +13,17 @@ from .local_paths import LOCAL_ROOT_PATH
 
 class LocalFileService:
 
+    proccessed_files = 0
+
+    def reset_proccesed_files(self):
+        LocalFileService.proccesed_files = 0
+
+    def increment_proccesed_files(self, count: int = 1):
+        LocalFileService.proccesed_files += count
+
+    def get_proccesed_files(self):
+        return LocalFileService.proccesed_files
+
     def __init__(self) -> None:
         self._create_root()
 
@@ -44,6 +55,8 @@ class LocalFileService:
         with open(dir_path, 'a') as file:
             file.write(body)
 
+        self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f"Contenido agregado con exito a '{relative_path}'"
@@ -73,17 +86,19 @@ class LocalFileService:
         with open(file_path, 'w') as file:
             file.write(body)
 
+        self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f"Archivo '{name}' creado con exito en la ruta '{relative_path}'"
         }
 
-    def delete_resource(self, relative_path: str, file_name: str = None):
+    def delete_resource(self, relative_path: str, file_name: str = None, count_as_processed: bool = True):
 
         if file_name:
-            return self._delete_file(relative_path, file_name)
+            return self._delete_file(relative_path, file_name, count_as_processed)
         else:
-            return self._delete_directory(relative_path)
+            return self._delete_directory(relative_path, count_as_processed)
 
     def modify_resource(self, relative_path: str, body: str) -> dict:
 
@@ -106,6 +121,8 @@ class LocalFileService:
 
         with open(dir_path, 'w') as file:
             file.write(body)
+
+        self.increment_proccesed_files()
 
         return {
             'ok': True,
@@ -137,12 +154,14 @@ class LocalFileService:
         # Rename
         rename(dir_path, new_path)
 
+        self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f"Archivo '{relative_path}' renombrado con exito"
         }
 
-    def _delete_file(self, relative_path: str, file_name: str):
+    def _delete_file(self, relative_path: str, file_name: str, count_as_processed: bool = False):
 
         # Validate if dir/file exists
         if relative_path[0] == '/':
@@ -159,12 +178,15 @@ class LocalFileService:
         # Delete
         remove(file_path)
 
+        if count_as_processed:
+            self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f"Archivo '{relative_path}' eliminado con exito"
         }
 
-    def _delete_directory(self, relative_path: str):
+    def _delete_directory(self, relative_path: str, count_as_processed: bool = False):
 
         # Validate if dir/file exists
         if relative_path[0] == '/':
@@ -184,6 +206,14 @@ class LocalFileService:
                 'ok': False,
                 'msg': f"La ruta '{relative_path}' no es un directorio"
             }
+
+        # get file count (including subdirectories)
+        if count_as_processed:
+            file_count = 0
+            for _, _, files in walk(dir_path):
+                file_count += len(files)
+
+            self.increment_proccesed_files(file_count)
 
         # Delete directory even if it has files
         rmtree(dir_path)
@@ -272,6 +302,8 @@ class LocalFileService:
         # Copy file
         copy2(from_file_path, to_file_path)
 
+        self.increment_proccesed_files()
+
         return {
             'ok': True,
             'msg': f"Archivo '{file_name}' copiado con exito a la ruta '{to_path}'"
@@ -309,7 +341,6 @@ class LocalFileService:
 
         # for storing warnings like: 'file already exists'
         warnings = []
-        # TODO:
 
         for item in listdir(from_dir_path):
             item_path = path.join(from_dir_path, item)
@@ -325,9 +356,16 @@ class LocalFileService:
                     continue
 
             if path.isdir(item_path):
-                # print(f'copy dir {item_path} to {new_item_path}')
+
+                file_count = 0
+                for _, _, files in walk(item_path):
+                    file_count += len(files)
+
+                self.increment_proccesed_files(file_count)
+
                 copytree(item_path, new_item_path)
             else:
+                self.increment_proccesed_files()
                 copy2(item_path, new_item_path)
 
         return {
@@ -367,7 +405,7 @@ class LocalFileService:
 
         if path.isfile(path.join(LOCAL_ROOT_PATH, from_path)):
             # remove filename from from_path
-            self.delete_resource(path.dirname(from_path), path.basename(from_path))
+            self.delete_resource(path.dirname(from_path), path.basename(from_path), False)
         else:
             self._delete_directory_content(from_path)
 
