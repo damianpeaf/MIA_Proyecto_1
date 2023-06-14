@@ -1,6 +1,10 @@
 from enum import Enum
 
 
+class Store:
+    IS_LOGGED: bool = False
+
+
 class CommandEnvironment(Enum):
     LOCAL = 1
     CLOUD = 2
