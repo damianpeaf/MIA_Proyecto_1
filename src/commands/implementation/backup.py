@@ -10,9 +10,25 @@ class BackupCommand(CommandStrategy):
         super().__init__("backup", args,  backup_validations)
 
     def execute(self):
+
+        resp = None
+
         if self.get_config().environment == CommandEnvironment.CLOUD:
-            pass
+            # save all files from the cloud to the local
+            resp = self._cloud_service.local_backup()
         elif self.get_config().environment == CommandEnvironment.LOCAL:
+            # save all files from the local to the cloud
             pass
+
+        warnings = resp.get('warnings')
+
+        if warnings:
+            for warning in warnings:
+                self.warning(warning)
+
+        if resp.get('ok'):
+            self.success(resp.get('msg'))
+        else:
+            self.error(resp.get('msg'))
 
         return True

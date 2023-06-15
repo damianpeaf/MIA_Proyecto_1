@@ -16,13 +16,13 @@ class LocalFileService:
     proccessed_files = 0
 
     def reset_proccesed_files(self):
-        LocalFileService.proccesed_files = 0
+        LocalFileService.proccessed_files = 0
 
     def increment_proccesed_files(self, count: int = 1):
-        LocalFileService.proccesed_files += count
+        LocalFileService.proccessed_files += count
 
     def get_proccesed_files(self):
-        return LocalFileService.proccesed_files
+        return LocalFileService.proccessed_files
 
     def __init__(self) -> None:
         self._create_root()
@@ -30,6 +30,36 @@ class LocalFileService:
     def _create_root(self):
         if not path.exists(LOCAL_ROOT_PATH):
             mkdir(LOCAL_ROOT_PATH)
+
+    def create_directory(self, name: str, relative_path: str, change_name: bool = True):
+        # relative path starts with '/'
+        if relative_path[0] == '/':
+            relative_path = relative_path[1:]
+
+        # Create path LOCAL_ROOT_PATH + relative_path
+        dir_path = path.join(LOCAL_ROOT_PATH, relative_path, name)
+
+        warnings = []
+
+        if path.exists(dir_path):
+            if change_name:
+                dir_path = self._get_unique_name(path.join(LOCAL_ROOT_PATH, relative_path), name)
+                warnings.append(f"El directorio '{name}' ya existe en la ruta '{relative_path}'. Se creará como '{path.basename(dir_path)}'")
+            else:
+                return {
+                    'ok': False,
+                    'msg': f"El directorio '{name}' ya existe en la ruta '{relative_path}'"
+                }
+
+        # Create directory
+        makedirs(dir_path, exist_ok=True)
+
+        return {
+            'ok': True,
+            'msg': f"Directorio '{name}' creado con exito en la ruta '{relative_path}'",
+            'name': path.basename(dir_path),
+            'warnings': warnings
+        }
 
     def add_content(self, relative_path: str, body: str) -> dict[str, str]:
         relative_path = relative_path[1:] if relative_path[0] == '/' else relative_path
@@ -62,7 +92,7 @@ class LocalFileService:
             'msg': f"Contenido agregado con exito a '{relative_path}'"
         }
 
-    def create_file(self, name: str, body: str, relative_path: str):
+    def create_file(self, name: str, body: str, relative_path: str, change_name: bool = False):
 
         # relative path starts with '/'
         if relative_path[0] == '/':
@@ -75,12 +105,19 @@ class LocalFileService:
 
         file_path = path.join(dir_path, name)
 
+        warnings = []
+
         # if file exists return
         if path.exists(file_path):
-            return {
-                'ok': False,
-                'msg': f"El archivo '{name}' ya existe en la ruta '{relative_path}'"
-            }
+
+            if change_name:
+                file_path = self._get_unique_name(dir_path, name)
+                warnings.append(f"El archivo '{name}' ya existe en la ruta '{relative_path}'. Se creará como '{path.basename(file_path)}'")
+            else:
+                return {
+                    'ok': False,
+                    'msg': f"El archivo '{name}' ya existe en la ruta '{relative_path}'"
+                }
 
         # create file
         with open(file_path, 'w') as file:
@@ -90,7 +127,9 @@ class LocalFileService:
 
         return {
             'ok': True,
-            'msg': f"Archivo '{name}' creado con exito en la ruta '{relative_path}'"
+            'msg': f"Archivo '{name}' creado con exito en la ruta '{relative_path}'",
+            'name': path.basename(file_path),
+            'warnings': warnings
         }
 
     def delete_resource(self, relative_path: str, file_name: str = None, count_as_processed: bool = True):

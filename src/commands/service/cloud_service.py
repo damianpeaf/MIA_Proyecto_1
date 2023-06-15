@@ -1,14 +1,15 @@
 from __future__ import print_function
 
-from os import path
 import tempfile
 import io
-
+from os import path
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 from io import BytesIO
+
+from .local_service import LocalFileService
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 TOKEN_PATH = path.abspath(path.join(path.dirname(__file__), 'token.json'))
@@ -642,3 +643,92 @@ class CloudFileService:
             'ok': True,
             'msg': fh.getvalue().decode('utf-8')
         }
+
+    def local_backup(self):
+        # save all files from the cloud to the local
+        local_service = LocalFileService()
+
+        # Get all files and directories inside root
+        query = f"'{self._root_id}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id, name, mimeType)').execute()
+        files = response.get('files', [])
+
+        warnings = []
+
+        for file in files:
+
+            file_name = file.get('name')
+            mime_type = file.get('mimeType')
+
+            # subdirectory
+            if mime_type == 'application/vnd.google-apps.folder':
+                resp = local_service.create_directory(file_name, '/')
+
+                if resp.get('ok'):
+                    file_name = resp.get('name')  # posible change name
+
+                    if resp.get('warnings'):
+                        warnings += resp.get('warnings')
+
+                self._local_backup_directory_content(file, file_name, local_service, warnings)
+
+            # file
+            else:
+                self._local_backup_file(file, local_service, '/', warnings)
+
+        return {
+            'msg': 'Respaldo local creado con exito',
+            'ok': True,
+            'warnings': warnings
+        }
+
+    def _local_backup_directory_content(self, from_resource: dict, path: str, local_service: LocalFileService, warnings: list[str]):
+
+        # Get all files and directories inside from_resource
+        query = f"'{from_resource.get('id')}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id, name, mimeType)').execute()
+        files = response.get('files', [])
+
+        for file in files:
+
+            file_name = file.get('name')
+            mime_type = file.get('mimeType')
+
+            # subdirectory
+            if mime_type == 'application/vnd.google-apps.folder':
+                resp = local_service.create_directory(file_name, path)
+
+                if resp.get('ok'):
+                    file_name = resp.get('name')
+
+                    if resp.get('warnings'):
+                        warnings += resp.get('warnings')
+
+                self._local_backup_directory_content(file, path + '/' + file_name, local_service, warnings)
+
+            # file
+            else:
+                self._local_backup_file(file, local_service, path, warnings)
+
+    def _local_backup_file(self, from_resource: dict, local_service: LocalFileService, path: str, warnings: list[str]):
+
+        # Get file content
+        request = self._drive_service.files().get_media(fileId=from_resource.get('id'))
+
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        body = fh.getvalue().decode('utf-8', 'ignore')
+        resp = local_service.create_file(from_resource.get('name'), body, path, True)
+
+        if resp.get('ok'):
+            if resp.get('warnings'):
+                warnings += resp.get('warnings')
