@@ -9,7 +9,6 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload, MediaIoBaseUpload
 from io import BytesIO
 
-from .local_service import LocalFileService
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
 TOKEN_PATH = path.abspath(path.join(path.dirname(__file__), 'token.json'))
@@ -110,7 +109,7 @@ class CloudFileService:
             'msg': f'Se agregó el contenido al archivo {file_name}' if is_add else f'Se modificó el contenido del archivo {file_name}'
         }
 
-    def create_file(self, name, content, path):
+    def create_file(self, name, content, path, change_name: bool = False):
 
         try:
             if self._drive_service is None:
@@ -127,25 +126,33 @@ class CloudFileService:
                 q=query, fields='files(id)').execute()
             files = response.get('files', [])
 
+            warnings = []
+            file_name = name
+
             if len(files) > 0:
-                return {
-                    'msg': f"El archivo '{name}' ya existe en la ruta especificada '{path}'",
-                    'file_id': files[0].get('id'),
-                    'ok': False
-                }
+                if change_name:
+                    # change name
+                    file_name = self._get_new_name(name, parent_id)
+                    warnings.append(f"El archivo '{name}' ya existe en la ruta especificada, se creó con el nombre '{file_name}'")
+                else:
+                    return {
+                        'msg': f"El archivo '{name}' ya existe en la ruta especificada",
+                        'ok': False,
+                        'warnings': warnings
+                    }
 
             # Temp file
 
             with tempfile.NamedTemporaryFile(delete=True) as temp_file:
                 temp_path = temp_file.name
 
-            with open(temp_path, 'w') as temp_file:
+            with open(temp_path, 'w', encoding='utf-8') as temp_file:
                 temp_file.write(content)
 
             # Upload file
 
             file_metadata = {
-                'name': name,
+                'name': file_name,
                 'parents': [parent_id]
             }
 
@@ -159,7 +166,8 @@ class CloudFileService:
             return {
                 'msg': f"Archivo '{name}' creado con exito en la ruta especificada '{path}'",
                 'file_id': file.get('id'),
-                'ok': True
+                'ok': True,
+                'warnings': warnings
             }
 
         except Exception as e:
@@ -167,7 +175,8 @@ class CloudFileService:
             return {
                 'msg': 'Ocurrio un error al crear el archivo',
                 'file_id': None,
-                'ok': False
+                'ok': False,
+                'warnings': warnings
             }
 
     def rename_file_dir(self, relative_path: str, new_name: str):
@@ -292,8 +301,6 @@ class CloudFileService:
         if self._drive_service is None:
             return
 
-        # ! no cuentan las carpetas eliminadas
-
         # check if folder exists
         query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and trashed=false"
 
@@ -343,6 +350,52 @@ class CloudFileService:
 
         # last folder id
         return parent_id
+
+    def create_directory(self, name, path, change_name: bool = True):
+
+        if self._drive_service is None:
+            return
+
+        # Create directories
+        parent_id = self._create_directories(path)
+
+        # Search directory exists aleready
+
+        query = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false"
+
+        response = self._drive_service.files().list(
+            q=query, fields='files(id)').execute()
+        files = response.get('files', [])
+
+        warnings = []
+
+        if len(files) > 0:
+            if change_name:
+                # change name
+                name = self._get_new_name(name, parent_id)
+                warnings.append(f"El directorio '{name}' ya existe en la ruta especificada, se creó con el nombre '{name}'")
+            else:
+                return {
+                    'msg': f"El directorio '{name}' ya existe en la ruta especificada",
+                    'ok': False
+                }
+
+        # Create directory
+        file_metadata = {
+            'name': name,
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [parent_id]
+        }
+
+        file = self._drive_service.files().create(
+            body=file_metadata, fields='id').execute()
+
+        return {
+            'msg': f"Directorio '{name}' creado con exito en la ruta especificada '{path}'",
+            'ok': True,
+            'name': name,
+            'warnings': warnings
+        }
 
     def _get_parent_id(self, path: str) -> str:
 
@@ -644,9 +697,8 @@ class CloudFileService:
             'msg': fh.getvalue().decode('utf-8')
         }
 
-    def local_backup(self):
+    def local_backup(self, local_service):
         # save all files from the cloud to the local
-        local_service = LocalFileService()
 
         # Get all files and directories inside root
         query = f"'{self._root_id}' in parents and trashed=false"
@@ -684,7 +736,7 @@ class CloudFileService:
             'warnings': warnings
         }
 
-    def _local_backup_directory_content(self, from_resource: dict, path: str, local_service: LocalFileService, warnings: list[str]):
+    def _local_backup_directory_content(self, from_resource: dict, path: str, local_service, warnings: list[str]):
 
         # Get all files and directories inside from_resource
         query = f"'{from_resource.get('id')}' in parents and trashed=false"
@@ -714,7 +766,7 @@ class CloudFileService:
             else:
                 self._local_backup_file(file, local_service, path, warnings)
 
-    def _local_backup_file(self, from_resource: dict, local_service: LocalFileService, path: str, warnings: list[str]):
+    def _local_backup_file(self, from_resource: dict, local_service, path: str, warnings: list[str]):
 
         # Get file content
         request = self._drive_service.files().get_media(fileId=from_resource.get('id'))

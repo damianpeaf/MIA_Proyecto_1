@@ -15,10 +15,10 @@ class BackupCommand(CommandStrategy):
 
         if self.get_config().environment == CommandEnvironment.CLOUD:
             # save all files from the cloud to the local
-            resp = self._cloud_service.local_backup()
+            resp = self._cloud_service.local_backup(self._local_service)
         elif self.get_config().environment == CommandEnvironment.LOCAL:
             # save all files from the local to the cloud
-            pass
+            resp = self._local_service.cloud_backup(self._cloud_service)
 
         warnings = resp.get('warnings')
 

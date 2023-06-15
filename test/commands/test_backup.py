@@ -1,23 +1,23 @@
 from commands import CommandProxy, Logger
 
 
-def test_backup_cloud():
+def test_backup_local():
     try:
 
         Logger.clear_logs()
-        print('\ntesting backup command for cloud...\n')
+        print('\ntesting backup command for local...\n')
 
         proxy = CommandProxy()
         proxy.reset()
 
         # initial config
         proxy.execute('configure', {
-            'type': 'cloud',
+            'type': 'local',
             'encrypt_log': 'false',
             'encrypt_read': 'false',
         })
 
-        # * CLOUD ENVIRONMENT
+        # * local ENVIRONMENT
 
         print('\n------ backup ------')
         proxy.execute('backup', {})

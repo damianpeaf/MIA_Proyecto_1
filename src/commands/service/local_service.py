@@ -120,7 +120,7 @@ class LocalFileService:
                 }
 
         # create file
-        with open(file_path, 'w') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             file.write(body)
 
         self.increment_proccesed_files()
@@ -158,7 +158,7 @@ class LocalFileService:
                 'msg': f"La ruta '{relative_path}' es un directorio"
             }
 
-        with open(dir_path, 'w') as file:
+        with open(dir_path, 'w', encoding='utf-8') as file:
             file.write(body)
 
         self.increment_proccesed_files()
@@ -419,7 +419,7 @@ class LocalFileService:
         index = 1
         new_name = name
         while path.exists(path.join(directory_path, new_name)):
-            new_name = f"{base_name} ({index}){ext}"
+            new_name = f"{base_name}({index}){ext}"
             index += 1
         return path.join(directory_path, new_name)
 
@@ -479,3 +479,56 @@ class LocalFileService:
                 'msg': f"Contenido del archivo '{relative_path}' obtenido con exito",
                 'body': file.read()
             }
+
+    def cloud_backup(self, cloud_service):
+        # saves all files and directories in cloud
+
+        warnings = []
+
+        for item in listdir(LOCAL_ROOT_PATH):
+            item_path = path.join(LOCAL_ROOT_PATH, item)
+
+            if path.isdir(item_path):
+                resp = cloud_service.create_directory(item, '/')
+
+                if resp.get('ok'):
+                    warnings += resp.get('warnings')
+
+                self._cloud_backup_directory(item_path, cloud_service, item, warnings)
+
+            else:
+                content = ''
+
+                with open(item_path, 'r', encoding='utf-8') as file:
+                    content = file.read()
+
+                resp = cloud_service.create_file(item, content, '/', True)
+                if resp.get('ok'):
+                    warnings += resp.get('warnings')
+
+        return {
+            'ok': True,
+            'msg': f"Todos los archivos y directorios fueron guardados en la nube",
+            'warnings': warnings
+        }
+
+    def _cloud_backup_directory(self, local_directory_path: str, cloud_service, relative_path: str, warnings: list):
+
+        for item in listdir(local_directory_path):
+            item_path = path.join(local_directory_path, item)
+
+            if path.isdir(item_path):
+                resp = cloud_service.create_directory(item, relative_path)
+                if resp.get('ok'):
+                    warnings += resp.get('warnings')
+                self._cloud_backup_directory(item_path, cloud_service, relative_path + '/' + item, warnings)
+
+            else:
+                content = ''
+
+                with open(item_path, 'r', encoding='utf-8') as file:
+                    content = file.read()
+
+                resp = cloud_service.create_file(item, content, relative_path, True)
+                if resp.get('ok'):
+                    warnings += resp.get('warnings')

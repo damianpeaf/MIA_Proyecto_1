@@ -87,7 +87,7 @@ class Logger:
         binnacle_file_path = path.join(binnacle_path, binnacle_file_name)
 
         if not path.exists(binnacle_file_path):
-            open(binnacle_file_path, 'w').close()
+            open(binnacle_file_path, 'w', encoding='utf-8').close()
 
         # if exists, append the last log
 
