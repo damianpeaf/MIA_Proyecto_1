@@ -2,7 +2,7 @@ from commands import Observer
 from analyzer.parser import parser
 
 import PySimpleGUI as sg
-from commands import CommandProxy, Logger
+from commands import CommandProxy, Logger, OperationType
 from commands.config import Store
 from auth import validate_user
 
@@ -76,7 +76,7 @@ class ConsoleObserver(Observer):
 
 def dashboard_frame():
     size_button = (10, 1)
-    size_window = (1280, 500)
+    size_window = (1280, 600)
 
     command_list_for_buttons = [
         ('Configure', 'Transfer'),
@@ -266,6 +266,7 @@ def dashboard_frame():
                 })
 
         if event == 'Cerrar sesión':
+            Logger.info('Cerrando sesión', OperationType.AUTH)
             Store.IS_LOGGED = False
             break
 

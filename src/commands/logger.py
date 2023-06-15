@@ -10,6 +10,7 @@ from .service import LOCAL_ROOT_PATH
 class OperationType(Enum):
     INPUT = auto()
     OUTPUT = auto()
+    AUTH = auto()
 
 
 class Logger:
@@ -44,7 +45,7 @@ class Logger:
         Logger.log_messages.append({
             'type': type,
             'message': message,
-            'operation_type': 'input' if operation_type == OperationType.INPUT else 'output',
+            'operation_type': operation_type.name,
             'date': datetime.now(),
             'enviroment': 'No configurado' if enviroment is None else enviroment
         })
