@@ -1,0 +1,3 @@
+[14/06/2023 20:17:28] - INPUT - INFO - Comando configure - type='Local', encrypt_log='True', encrypt_read='True', llave=''  - Entorno: No configurado
+[14/06/2023 20:17:28] - INPUT - ERROR - Comando: 'configure' - La llave de encriptacion debe tener 16 caracteres - Entorno: No configurado
+[14/06/2023 20:23:38] - INPUT - ERROR - Comando 'backup' requiere configuración inicial para ejecutarse - Entorno: No configurado

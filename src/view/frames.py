@@ -78,11 +78,11 @@ def dashboard_frame():
     size_window = (1280, 500)
 
     command_list_for_buttons = [
-        ('configure', 'transfer'),
-        ('create', 'rename'),
-        ('delete', 'modify'),
-        ('copy', 'add'),
-        ('backup', 'exec')
+        ('Configure', 'Transfer'),
+        ('Create', 'Rename'),
+        ('Delete', 'Modify'),
+        ('Copy', 'Add'),
+        ('Backup', 'Exec')
     ]
 
     list_of_buttons = [
@@ -116,7 +116,10 @@ def dashboard_frame():
             Store.IS_LOGGED = None
             break
         if event == 'Ejecutar':
-            print(window['-COMMAND-'].get())
+            command = window['-COMMAND-'].get()
+            if command:
+                pass
+
         if event == 'Add':
             values = create_input_window(
                 'Add', [
@@ -130,7 +133,7 @@ def dashboard_frame():
                     'body': values['-BODY-']
                 })
         if event == 'Backup':
-            pass
+            proxy.execute('backup', {})
         if event == 'Create':
             value = create_input_window(
                 'Create', [
@@ -152,11 +155,9 @@ def dashboard_frame():
             values = create_input_window(
                 'Copy', [
                     [sg.Text('From')],
-                    [sg.Input(sg.user_settings_get_entry(
-                        '-filename-', ''), key='-FROM-'), sg.FileBrowse()],
+                    [sg.Input(key='-FROM-')],
                     [sg.Text('To')],
-                    [sg.Input(sg.user_settings_get_entry(
-                        '-filename-', ''), key='-TO-'), sg.FolderBrowse()],
+                    [sg.Input(key='-TO-')],
                 ],
                 window_size=(550, 200))
             if values:
@@ -168,11 +169,12 @@ def dashboard_frame():
         if event == 'Configure':
             values = create_input_window(
                 'Configure', [
-                    [sg.Text('Type'), sg.Input(key='-TYPE-')],
-                    [sg.Text('Log encryption'), sg.Input(
-                        key='-LOG_ENCRYPTION-')],
-                    [sg.Text('Read encryption'), sg.Input(
-                        key='-READ_ENCRYPTION-')],
+                    [sg.Text('Type'), sg.Combo(
+                        key='-TYPE-', values=['Local', 'Cloud'], default_value='Local')],
+                    [sg.Text('Log encryption'), sg.Combo(
+                        key='-LOG_ENCRYPTION-', values=['True', 'False'], default_value='False')],
+                    [sg.Text('Read encryption'), sg.Combo(
+                        key='-READ_ENCRYPTION-', values=['True', 'False'], default_value='False')],
                     [sg.Text('Encryption key'), sg.Input(
                         key='-ENCRYPTION_KEY-')],
                 ],
@@ -236,8 +238,7 @@ def dashboard_frame():
                     'name': values['-NAME-']
                 })
         if event == 'Transfer':
-            create_input_window(
-                'Transfer', [('From', '-FROM-'), ('To', '-TO-'), ('Mode', '-MODE-')])
+
             values = create_input_window(
                 'Transfer', [
                     [sg.Text('From')],
@@ -245,7 +246,8 @@ def dashboard_frame():
                     [sg.Text('To')],
                     [sg.Input(key='-TO-')],
                     [sg.Text('Mode')],
-                    [sg.Input(key='-MODE-')],
+                    [sg.Combo(key='-MODE-', values=['Local', 'Cloud'],
+                              default_value='Local')],
                 ],
                 window_size=(550, 200))
             if values:
