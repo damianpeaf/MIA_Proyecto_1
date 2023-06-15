@@ -1,4 +1,5 @@
 from commands import Observer
+from analyzer.parser import parser
 
 import PySimpleGUI as sg
 from commands import CommandProxy, Logger
@@ -68,8 +69,8 @@ class ConsoleObserver(Observer):
 
     def update(self, data):
         # append new command to console
-        self.window['console_area'].update(
-            self.window['console_area'].get() + '\n' + data
+        self.window['-CONSOLE-'].update(
+            self.window['-CONSOLE-'].get() + '\n' + data
         )
 
 
@@ -98,7 +99,8 @@ def dashboard_frame():
 
     layout = [
         [sg.Text('Consola', size=(40, 1), justification='left')],
-        [sg.Multiline(size=(80, 20), key="console_area"), sg.Column(col)],
+        [sg.Multiline(size=(80, 20), key="-CONSOLE-",
+                      disabled=True), sg.Column(col)],
         [sg.Input(key='-COMMAND-', size=(80, 1)), sg.Button('Ejecutar')]
     ]
 
@@ -117,8 +119,14 @@ def dashboard_frame():
             break
         if event == 'Ejecutar':
             command = window['-COMMAND-'].get()
+            if command == '':
+                continue
+            window['-CONSOLE-'].update(
+                window['-CONSOLE-'].get() + '\n' + command)
             if command:
-                pass
+                param_name, params = parser.parse(command)
+                proxy.execute(param_name, params)
+            window['-COMMAND-'].update('')
 
         if event == 'Add':
             values = create_input_window(
