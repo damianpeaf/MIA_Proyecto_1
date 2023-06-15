@@ -266,6 +266,7 @@ def dashboard_frame():
                 })
 
         if event == 'Cerrar sesión':
+            proxy.reset_console_event()
             Logger.info('Cerrando sesión', OperationType.AUTH)
             Store.IS_LOGGED = False
             break
