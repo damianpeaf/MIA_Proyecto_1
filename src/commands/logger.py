@@ -51,8 +51,7 @@ class Logger:
 
         Logger._write_binnacle()
 
-        if operation_type == OperationType.OUTPUT:
-            CommandProxy.console_event.notify_observers(message)
+        CommandProxy.console_event.notify_observers(f"{type} - {message} - Entorno: {'No configurado' if enviroment is None else enviroment}")
 
     @staticmethod
     def print_logs():

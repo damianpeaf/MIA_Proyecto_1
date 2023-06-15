@@ -1,7 +1,7 @@
 from os import path
 
 from utils import aes_encryption, aes_decryption
-from commands import LOCAL_BASE_PATH
+from commands import LOCAL_BASE_PATH, Logger, OperationType
 
 USERS_FILE = 'miausuarios.txt'
 AES_KEY = 'miaproyecto12345'
@@ -20,7 +20,10 @@ True if the username and password are valid, False otherwise.
 
 def validate_user(username: str = '', password: str = '') -> bool:
 
+    Logger.info('Intentando de inicio de sesión del usuario: ' + username, OperationType.INPUT)
+
     if not path.exists(path.join(LOCAL_BASE_PATH, USERS_FILE)):
+        Logger.error('El archivo de usuarios no existe.', OperationType.INPUT)
         return False
 
     with open(path.join(LOCAL_BASE_PATH, USERS_FILE), 'r') as users_file:
@@ -38,12 +41,14 @@ def validate_user(username: str = '', password: str = '') -> bool:
             # If the username was found, check the password
             if username_found:
                 if line.strip().upper() == aes_encryption(AES_KEY, password).upper():
+                    Logger.info('Inicio de sesión exitoso del usuario: ' + username, OperationType.INPUT)
                     return {
                         'username': username,
                         'ok': True
                     }
 
                 # If the password was not found, return False
+                Logger.error('Contraseña incorrecta para el usuario: ' + username, OperationType.INPUT)
                 return {
                     'username': username,
                     'ok': False
@@ -54,6 +59,7 @@ def validate_user(username: str = '', password: str = '') -> bool:
 
             check = not check
 
+    Logger.error('El usuario no existe: ' + username, OperationType.INPUT)
     return {
         'username': username,
         'ok': False

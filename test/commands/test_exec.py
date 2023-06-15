@@ -10,7 +10,7 @@ def test_exec():
 
     # ! no config
     proxy.execute('exec', {
-        'path': '/prueba/prueba1.mia',
+        'path': '/prueba/prueba2.mia',
     })
 
     Logger.print_logs()
