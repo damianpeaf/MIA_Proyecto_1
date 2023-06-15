@@ -75,26 +75,31 @@ class ConsoleObserver(Observer):
 
 def dashboard_frame():
     size_button = (10, 1)
-    size_window = (1280, 400)
+    size_window = (1280, 500)
+
+    command_list_for_buttons = [
+        ('configure', 'transfer'),
+        ('create', 'rename'),
+        ('delete', 'modify'),
+        ('copy', 'add'),
+        ('backup', 'exec')
+    ]
+
+    list_of_buttons = [
+        (sg.Button(command_1, size=size_button), sg.Button(command_2, size=size_button))for command_1, command_2 in command_list_for_buttons
+    ]
 
     col = [
-        [sg.T('Comandos', font=('Helvetica', 14))],
-        [sg.Button('Configure', size=size_button),
-         sg.Button('Transfer', size=size_button)],
-        [sg.Button('Create', size=size_button),
-         sg.Button('Rename', size=size_button)],
-        [sg.Button('Delete', size=size_button),
-         sg.Button('Modify', size=size_button)],
-        [sg.Button('Copy', size=size_button),
-         sg.Button('Add', size=size_button)],
-        [sg.Button('Backup', size=size_button),
-         sg.Button('Exec', size=size_button)],
-        [sg.Button('Cerrar sesión', size=(size_button[0] * 2, size_button[1]))]
+        [sg.Text('Comandos', size=(40, 1), justification='left')],
+        *list_of_buttons
+    ] + [
+        [sg.Button('Cerrar sesión', size=(size_button[0] * 2, size_button[1]))],
     ]
 
     layout = [
         [sg.Text('Consola', size=(40, 1), justification='left')],
-        [sg.Multiline(size=(80, 50), key="console_area"), sg.Column(col)],
+        [sg.Multiline(size=(80, 20), key="console_area"), sg.Column(col)],
+        [sg.Input(key='-COMMAND-', size=(80, 1)), sg.Button('Ejecutar')]
     ]
 
     window = sg.Window('Dashboard', layout, size=size_window,
@@ -110,6 +115,8 @@ def dashboard_frame():
         if event == sg.WINDOW_CLOSED:
             Store.IS_LOGGED = None
             break
+        if event == 'Ejecutar':
+            print(window['-COMMAND-'].get())
         if event == 'Add':
             values = create_input_window(
                 'Add', [
@@ -122,7 +129,6 @@ def dashboard_frame():
                     'path': values['-PATH-'],
                     'body': values['-BODY-']
                 })
-
         if event == 'Backup':
             pass
         if event == 'Create':
