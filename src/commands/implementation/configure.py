@@ -43,7 +43,7 @@ class ConfigureCommand(CommandStrategy):
 
         # Runtime validations
         # if encrypt_log is true or encrypt_read is true, llave is obligatory
-        if (encrypt_log or encrypt_read) and (encryption_key is None):
+        if (encrypt_log or encrypt_read) and (encryption_key == '' or encryption_key is None):
             self.add_error(
                 "Si se especifica como 'true' alguno de los parametros 'encrypt_log' o 'encrypt_read', se debe proveer una llave de encriptacion 'llave'",
                 OperationType.INPUT
