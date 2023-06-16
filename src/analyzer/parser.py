@@ -39,7 +39,11 @@ def p_parameter(p):
 
 
 def p_error(p):
-    print(f'Syntax error {p.value!r}, line {p.lineno}', p)
+
+    if p:
+        raise Exception(f'Error al parsear {p.value!r}')
+
+    raise Exception('Error al parsear')
 
 
 parser = yacc()

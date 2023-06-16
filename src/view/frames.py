@@ -49,7 +49,7 @@ def create_input_window(title, inputs: list, window_size=(550, 200)):
     layout.append([sg.Button('Ejecutar')])
 
     window = sg.Window(title, layout, size=window_size,
-                       element_justification='l', font=('Helvetica', 14))
+                       element_justification='l', font=('Helvetica', 14), resizable=True)
 
     while True:
         event, values = window.read()
@@ -124,8 +124,15 @@ def dashboard_frame():
             window['-CONSOLE-'].update(
                 window['-CONSOLE-'].get() + '\n' + command)
             if command:
-                param_name, params = parser.parse(command)
-                proxy.execute(param_name, params)
+                try:
+                    resp = parser.parse(command)
+
+                    if resp:
+                        param_name, params = resp
+                        proxy.execute(param_name, params)
+                except Exception as e:
+                    Logger.error(e, OperationType.INPUT)
+
             window['-COMMAND-'].update('')
 
         if event == 'Add':
@@ -266,6 +273,7 @@ def dashboard_frame():
                 })
 
         if event == 'Cerrar sesión':
+            proxy.reset_console_event()
             Logger.info('Cerrando sesión', OperationType.AUTH)
             Store.IS_LOGGED = False
             break
